@@ -2,3 +2,5 @@
 
 1. Process and extract aris raw file
 2. Test frame substraction
+3. Output sonar video
+
