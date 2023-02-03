@@ -351,6 +351,7 @@ def DataImport(filename, startFrame=1, frameBuffer=0):
     FrameRate = struct.unpack('I', data.read(4))[0]
     HighResolution = struct.unpack('I', data.read(4))[0]
     NumRawBeams = struct.unpack('I', data.read(4))[0]
+    print("NumRawBeams: " + str(NumRawBeams))
     SampleRate = struct.unpack('f', data.read(4))[0]
     SamplesPerChannel = struct.unpack('I', data.read(4))[0]
     ReceiverGain = struct.unpack('I', data.read(4))[0]
@@ -448,8 +449,14 @@ def FrameRead(ARIS_data, frameIndex, frameBuffer=None):
     A list of all the frames attributes can be found by using dir(frame), some
         of these may or may not be used by the ARIS.
     """
+    try:
+        print("NumRawBeams: " + ARIS_data.NumRawBeams)
+        print("BeamCount: " + ARIS_data.BeamCount)
+    except:
+        pass
 
     FrameSize = ARIS_data.NumRawBeams * ARIS_data.SamplesPerChannel
+    #FrameSize = ARIS_data.BeamCount * ARIS_data.SamplesPerChannel
 
     frameoffset = (1024 + (frameIndex * (1024 + (FrameSize))))
 
