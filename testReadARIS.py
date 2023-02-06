@@ -15,6 +15,20 @@ cv.fastNlMeansDenoising()
 cv.fastNlMeansDenoisingColored()
 cv.fastNlMeansDenoisingMulti()
 
+Metric
+Scikit Image has an estimate sigma function that works pretty well:
+
+http://scikit-image.org/docs/dev/api/skimage.restoration.html#skimage.restoration.estimate_sigma
+
+it also works with color images, you just need to set multichannel=True and average_sigmas=True:
+
+import cv2
+from skimage.restoration import estimate_sigma
+
+def estimate_noise(image_path):
+    img = cv2.imread(image_path)
+    return estimate_sigma(img, multichannel=True, average_sigmas=True)
+
 """
 
 
@@ -44,7 +58,8 @@ def main():
 
     out_file_name = filename[0 : len(filename) - 4] + "mp4"
     print("Output File: " + out_file_name)
-    pyARIS.VideoExport(frame, out_file_name, start_frame=10, end_frame=50, timestamp=True, fontsize=30, ts_pos=(10, 1200))
+    # chix: change from frame to ARISdata
+    pyARIS.VideoExport(ARISdata, out_file_name, start_frame=10, end_frame=2500, timestamp=True, fontsize=30, ts_pos=(10, 1200))
     print("Output Finished")
 
 
