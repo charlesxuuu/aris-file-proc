@@ -39,7 +39,7 @@ from PIL import Image
 import cv2
 
 filename = "D:/sonar/2020-05-27_071000.aris"
-
+filename = "G:/2020-05-24_000000.aris"
 
 def cutoff_gate(mapped_frame, low, high):
     for i in range(1, int(mapped_frame.size / mapped_frame[0].size) - 1 ):
