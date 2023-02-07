@@ -29,7 +29,7 @@ https://docs.opencv.org/3.4.0/db/d5c/tutorial_py_bg_subtraction.html
 import numpy as np
 import cv2 as cv
 
-algo = 'MOG'
+algo = 'MOG2'
 
 #create Background Subtractor objects
 if algo == 'MOG2':

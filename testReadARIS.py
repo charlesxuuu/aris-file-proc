@@ -59,7 +59,7 @@ def main():
     out_file_name = filename[0 : len(filename) - 4] + "mp4"
     print("Output File: " + out_file_name)
     # chix: change from frame to ARISdata
-    pyARIS.VideoExport(ARISdata, out_file_name, start_frame=10, end_frame=2500, timestamp=True, fontsize=30, ts_pos=(10, 1200))
+    pyARIS.VideoExport(ARISdata, out_file_name, start_frame=1800, end_frame=2500, timestamp=False, fontsize=30, ts_pos=(10, 1200))
     print("Output Finished")
 
 
