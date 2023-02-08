@@ -3,10 +3,23 @@ import numpy as np
 
 # Video Capture
 capture = cv2.VideoCapture("D:/sonar/2020-05-27_071000.mp4")
+capture = cv2.VideoCapture("D:/sonar/2020-05-24_000000.mp4")
+"""
+history is the number of frames used to build the statistic model of the background. 
+The smaller the value is, the faster changes in the background will be taken into account 
+by the model and thus be considered as background. And vice versa.
+
+dist2Threshold is a threshold to define whether a pixel is different from the background or not. 
+The smaller the value is, the more sensitive movement detection is. And vice versa.
+
+detectShadows : If set to true, shadows will be displayed in gray on the generated mask. (Example bellow)
+"""
 
 # Subtractors
-mogSubtractor = cv2.bgsegm.createBackgroundSubtractorMOG(300)       #
-mog2Subtractor = cv2.createBackgroundSubtractorMOG2(300, 400, True) #
+# history = 300, nmixtures = 5, backgroundRatio = 0.001
+mogSubtractor = cv2.bgsegm.createBackgroundSubtractorMOG(100)
+# history = 300, varThreshold = 16, detectShadows = true
+mog2Subtractor = cv2.createBackgroundSubtractorMOG2(100, 40, False)
 gmgSubtractor = cv2.bgsegm.createBackgroundSubtractorGMG(10, .8)    #
 knnSubtractor = cv2.createBackgroundSubtractorKNN(100, 400, True)   #
 cntSubtractor = cv2.bgsegm.createBackgroundSubtractorCNT(5, True)   # good
@@ -16,7 +29,7 @@ frameCount = 0
 
 # Determine how many pixels do you want to detect to be considered "movement"
 movementCount = 1000
-movementText = "Someones stealing your honey"
+movementText = "pixels > 1000"
 textColor = (255, 255, 255)
 
 while (1):
@@ -28,8 +41,9 @@ while (1):
         break
 
     frameCount += 1
+
     # Resize the frame
-    resizedFrame = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
+    resizedFrame = cv2.resize(frame, (0, 0), fx=0.64, fy=0.64)
 
     # Get the foreground masks using all of the subtractors
     mogMask = mogSubtractor.apply(resizedFrame)
@@ -48,7 +62,6 @@ while (1):
 
     #cv2.findContours
     cv2.threshold(mogMask, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU, mogMask)
-    tmp
 
     print('mog Frame: %d, Pixel Count: %d' % (frameCount, mogCount))
     print('mog2M Frame: %d, Pixel Count: %d' % (frameCount, mog2MCount))
@@ -59,8 +72,7 @@ while (1):
     titleTextPosition = (100, 40)
     titleTextSize = 1.2
     cv2.putText(mogMask, 'MOG', titleTextPosition, cv2.FONT_HERSHEY_SIMPLEX, titleTextSize, textColor, 2, cv2.LINE_AA)
-    cv2.putText(mog2Mmask, 'MOG2', titleTextPosition, cv2.FONT_HERSHEY_SIMPLEX, titleTextSize, textColor, 2,
-                cv2.LINE_AA)
+    cv2.putText(mog2Mmask, 'MOG2', titleTextPosition, cv2.FONT_HERSHEY_SIMPLEX, titleTextSize, textColor, 2, cv2.LINE_AA)
     cv2.putText(gmgMask, 'GMG', titleTextPosition, cv2.FONT_HERSHEY_SIMPLEX, titleTextSize, textColor, 2, cv2.LINE_AA)
     cv2.putText(knnMask, 'KNN', titleTextPosition, cv2.FONT_HERSHEY_SIMPLEX, titleTextSize, textColor, 2, cv2.LINE_AA)
     cv2.putText(cntMask, 'CNT', titleTextPosition, cv2.FONT_HERSHEY_SIMPLEX, titleTextSize, textColor, 2, cv2.LINE_AA)
