@@ -1,8 +1,12 @@
 import cv2
 import numpy as np
+import time
 
 # Video Capture
 capture = cv2.VideoCapture("D:/sonar/2020-05-27_071000.mp4")
+capture = cv2.VideoCapture("D:/sonar/2020-05-25_020000.mp4")
+capture = cv2.VideoCapture("D:/sonar/caltech_2018-05-27_180004_1295_1895.mp4")
+
 #capture = cv2.VideoCapture("D:/sonar/2020-05-24_000000.mp4")
 """
 history is the number of frames used to build the statistic model of the background. 
@@ -46,26 +50,29 @@ while (1):
     frameCount += 1
 
     # Resize the frame
-    resizedFrame = cv2.resize(frame, (0, 0), fx=0.64, fy=0.64)
+    resizedFrame = cv2.resize(frame, (0, 0), fx=1, fy=1)
 
 
 
     # Get the foreground masks using all of the subtractors
     mogMask = mogSubtractor.apply(resizedFrame)
+
     countMogMask = mogMask.copy()
     ret, thresh = cv2.threshold(countMogMask, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
     n_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(thresh)
     print("n_labels: " + str(n_labels))
 
-    size_thresh = 1
+
+    size_thresh = 10
     for i in range(1, n_labels):
         if stats[i, cv2.CC_STAT_AREA] >= size_thresh:
-            # print(stats[i, cv2.CC_STAT_AREA])
+            #print(stats[i, cv2.CC_STAT_AREA])
             x = stats[i, cv2.CC_STAT_LEFT]
             y = stats[i, cv2.CC_STAT_TOP]
             w = stats[i, cv2.CC_STAT_WIDTH]
             h = stats[i, cv2.CC_STAT_HEIGHT]
-            cv2.rectangle(countMogMask, (x, y), (x + w, y + h), (0, 255, 0), thickness=1)
+            print("loc: " + str(x) + " " +str(y) + " " + str(w) + " " + str(h))
+            cv2.rectangle(countMogMask, (x, y), (x + w, y + h), (0, 255, 0), thickness=3)
 
 
     mog2Mmask = mog2Subtractor.apply(resizedFrame)
@@ -130,12 +137,14 @@ while (1):
     cv2.moveWindow('MOG2', 1600, 0)
     cv2.moveWindow('CNT', 2000, 0)
 
-    cv2.moveWindow('countMogMask', 2400, 0)
+    cv2.moveWindow('countMogMask', 400, 700)
 
     k = cv2.waitKey(0) & 0xff
     print(k)
     if k == 27:
         break
+
+time.sleep(5)
 
 capture.release()
 cv2.destroyAllWindows()
