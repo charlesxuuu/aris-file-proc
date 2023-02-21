@@ -5,7 +5,7 @@ import time
 # Video Capture
 capture = cv2.VideoCapture("D:/sonar/2020-05-27_071000.mp4")
 capture = cv2.VideoCapture("D:/sonar/2020-05-25_020000.mp4")
-capture = cv2.VideoCapture("D:/sonar/caltech_2018-05-27_180004_1295_1895.mp4")
+#capture = cv2.VideoCapture("D:/sonar/caltech_2018-05-27_180004_1295_1895.mp4")
 
 #capture = cv2.VideoCapture("D:/sonar/2020-05-24_000000.mp4")
 """
@@ -28,7 +28,7 @@ mogSubtractor = cv2.bgsegm.createBackgroundSubtractorMOG(100)       # 1
 # history = 300, varThreshold = 16, detectShadows = true
 mog2Subtractor = cv2.createBackgroundSubtractorMOG2(100, 40, False) # 3
 gmgSubtractor = cv2.bgsegm.createBackgroundSubtractorGMG(10, .8)    #
-knnSubtractor = cv2.createBackgroundSubtractorKNN(100, 400, True)   # 2
+knnSubtractor = cv2.createBackgroundSubtractorKNN(100, 400, False)   # 2
 cntSubtractor = cv2.bgsegm.createBackgroundSubtractorCNT(5, True)   #
 
 # Keeps track of what frame we're on
@@ -50,20 +50,24 @@ while (1):
     frameCount += 1
 
     # Resize the frame
-    resizedFrame = cv2.resize(frame, (0, 0), fx=1, fy=1)
+    resizedFrame = cv2.resize(frame, (0, 0), fx=0.64, fy=0.64)
 
 
 
     # Get the foreground masks using all of the subtractors
     mogMask = mogSubtractor.apply(resizedFrame)
+    knnMask = knnSubtractor.apply(resizedFrame)
 
-    countMogMask = mogMask.copy()
-    ret, thresh = cv2.threshold(countMogMask, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    countKnnMask = mogMask.copy()
+
+    morphKnnMask = cv2.morphologyEx(countKnnMask, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2, 2)))
+
+    ret, thresh = cv2.threshold(morphKnnMask, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
     n_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(thresh)
     print("n_labels: " + str(n_labels))
 
-
-    size_thresh = 10
+    morphKnnMask = cv2.cvtColor(morphKnnMask, cv2.COLOR_GRAY2RGB)
+    size_thresh = 30
     for i in range(1, n_labels):
         if stats[i, cv2.CC_STAT_AREA] >= size_thresh:
             #print(stats[i, cv2.CC_STAT_AREA])
@@ -72,14 +76,15 @@ while (1):
             w = stats[i, cv2.CC_STAT_WIDTH]
             h = stats[i, cv2.CC_STAT_HEIGHT]
             print("loc: " + str(x) + " " +str(y) + " " + str(w) + " " + str(h))
-            cv2.rectangle(countMogMask, (x, y), (x + w, y + h), (0, 255, 0), thickness=3)
+            cv2.rectangle(morphKnnMask, (x, y), (x + w, y + h), (0, 255, 0), thickness=1)
 
 
     mog2Mmask = mog2Subtractor.apply(resizedFrame)
     gmgMask = gmgSubtractor.apply(resizedFrame)
-    gmgMask = cv2.morphologyEx(gmgMask, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3)))
-    knnMask = knnSubtractor.apply(resizedFrame)
+    gmgMask = cv2.morphologyEx(gmgMask, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2, 2)))
+
     cntMask = cntSubtractor.apply(resizedFrame)
+
 
     # Count all the non zero pixels within the masks
     mogCount = np.count_nonzero(mogMask)
@@ -128,7 +133,8 @@ while (1):
     cv2.imshow('KNN', knnMask)
     cv2.imshow('CNT', cntMask)
 
-    cv2.imshow('countMogMask', countMogMask)
+    cv2.imshow('countKnnMask', countKnnMask)
+    cv2.imshow('morphKnnMask', morphKnnMask)
 
     cv2.moveWindow('Original', 0, 0)
     cv2.moveWindow('MOG', 400, 0)
@@ -137,7 +143,8 @@ while (1):
     cv2.moveWindow('MOG2', 1600, 0)
     cv2.moveWindow('CNT', 2000, 0)
 
-    cv2.moveWindow('countMogMask', 400, 700)
+    cv2.moveWindow('countKnnMask', 400, 700)
+    cv2.moveWindow('morphKnnMask', 800, 700)
 
     k = cv2.waitKey(0) & 0xff
     print(k)
