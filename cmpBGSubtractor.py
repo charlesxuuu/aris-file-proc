@@ -4,7 +4,7 @@ import time
 
 # Video Capture
 capture = cv2.VideoCapture("D:/sonar/2020-05-27_071000.mp4")
-capture = cv2.VideoCapture("D:/sonar/2020-05-25_020000.mp4")
+#capture = cv2.VideoCapture("D:/sonar/2020-05-25_020000.mp4")
 #capture = cv2.VideoCapture("D:/sonar/caltech_2018-05-27_180004_1295_1895.mp4")
 
 #capture = cv2.VideoCapture("D:/sonar/2020-05-24_000000.mp4")
