@@ -9,6 +9,9 @@ capture = cv2.VideoCapture("D:/sonar/2020-05-27_071000.mp4")
 
 #capture = cv2.VideoCapture("D:/sonar/2020-05-24_000000.mp4")
 """
+
+MOG algorithm brief introduction (in chinese) https://blog.csdn.net/weixin_53598445/article/details/124093067
+
 history is the number of frames used to build the statistic model of the background. 
 The smaller the value is, the faster changes in the background will be taken into account 
 by the model and thus be considered as background. And vice versa.
