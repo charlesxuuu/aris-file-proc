@@ -9,6 +9,7 @@ The most recent version can be found at: https://github.com/EminentCodfish/pyARI
 
 @author: Chris Rillahan
 """
+import os
 import struct, array, pytz, datetime, tqdm, cv2
 import subprocess as sp
 from PIL import Image, ImageFont, ImageDraw
@@ -909,7 +910,7 @@ def remapARIS2(ARISFile, frame, frameBuffer=None):
     frame.remap = Remap.astype('uint8')
 
 
-def VideoExport(data, filename, fps=24.0, start_frame=1, end_frame=None, timestamp=False, fontsize=30, ts_pos=(0, 0)):
+def VideoExport(data, foldername, filename, fps=15.0, start_frame=1, end_frame=None, timestamp=False, fontsize=30, ts_pos=(0, 0)):
     """Output video using the ffmpeg pipeline. The current implementation
     outputs compresses png files and outputs a mp4.
 
@@ -952,6 +953,33 @@ def VideoExport(data, filename, fps=24.0, start_frame=1, end_frame=None, timesta
                '-vcodec', 'mpeg4',
                filename]
 
+    # chix: Command to tune ffmpeg to get better quality
+    command = ['ffmpeg.exe',
+               '-y',  # (optional) overwrite output file if it exists
+               '-f', 'image2pipe',
+               #           '-s', '793x1327', # size of one frame
+               '-r', str(fps),  # frames per second
+               '-i', '-',  # The input comes from a pipe
+               '-an',  # Tells FFMPEG not to expect any audio
+               '-c:v', 'libx264',
+               '-crf', '0',
+               filename]
+
+    # print(foldername + '/jpeg_%04d.jpeg')
+    #
+    # command = ['ffmpeg.exe',
+    #            '-y',  # (optional) overwrite output file if it exists
+    #            '-f', 'image2pipe',
+    #            #           '-s', '793x1327', # size of one frame
+    #            #'-r', str(fps),  # frames per second
+    #            '-i', '-',  # The input comes from a pipe
+    #            '-an',  # Tells FFMPEG not to expect any audio
+    #            '-q:v', '0',
+    #            #'-crf', '0',
+    #            foldername + '/jpeg_%04d.jpeg']
+    # print(command)
+
+
     # Open the pipe
     pipe = sp.Popen(command, stdin=sp.PIPE)
 
@@ -969,5 +997,12 @@ def VideoExport(data, filename, fps=24.0, start_frame=1, end_frame=None, timesta
             font = ImageFont.truetype("./arial.ttf", fontsize)
             draw.text(ts_pos, ts, font=font, fill='white')
         im.save(pipe.stdin, 'JPEG')
+
+
+        dir_abs_path = os.path.dirname(foldername)
+        print(dir_abs_path)
+        #fp = open(foldername + '/' + str(i) + '.png', 'w')
+        fp = open(os.path.join(dir_abs_path, 'jpeg' + str(i) + '.jpeg'), 'w')
+        im.save(fp, 'JPEG')
 
     pipe.stdin.close()

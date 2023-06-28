@@ -39,9 +39,9 @@ from PIL import Image
 import cv2
 
 filename = "D:/sonar/2020-05-27_071000.aris"
-filename = "G:/2020-05-24_000000.aris"
-filename = "D:/sonar/2020-05-24_000000.aris"
-filename = "D:/sonar/2020-05-25_020000.aris"
+#filename = "G:/2020-05-24_000000.aris"
+#filename = "D:/sonar/2020-05-24_000000.aris"
+#filename = "D:/sonar/2020-05-25_020000.aris"
 def cutoff_gate(mapped_frame, low, high):
     for i in range(1, int(mapped_frame.size / mapped_frame[0].size) - 1 ):
         for j in range(1, mapped_frame[0].size - 1):
@@ -58,9 +58,11 @@ def main():
     ARISdata, frame = pyARIS.DataImport(filename)
 
     out_file_name = filename[0 : len(filename) - 4] + "mp4"
+    out_folder_name = filename[0 : len(filename) - 5]
     print("Output File: " + out_file_name)
+    print("Output Folder: " + out_folder_name)
     # chix: change from frame to ARISdata
-    pyARIS.VideoExport(ARISdata, out_file_name, start_frame=1, timestamp=False, fontsize=30, ts_pos=(10, 1200))
+    pyARIS.VideoExport(ARISdata, out_folder_name, out_file_name, start_frame=1, timestamp=False, fontsize=30, ts_pos=(10, 1200))
     print("Output Finished")
 
 
