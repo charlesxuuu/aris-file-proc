@@ -910,7 +910,9 @@ def remapARIS2(ARISFile, frame, frameBuffer=None):
     frame.remap = Remap.astype('uint8')
 
 
-def VideoExport(data, foldername, filename, fps=15.0, start_frame=1, end_frame=None, timestamp=False, fontsize=30, ts_pos=(0, 0)):
+def VideoExport(data, foldername, filename, fps=5.0, start_frame=1, end_frame=None, timestamp=False,
+                fontsize=30, ts_pos=(0, 0),
+                ):
     """Output video using the ffmpeg pipeline. The current implementation
     outputs compresses png files and outputs a mp4.
 
@@ -965,21 +967,6 @@ def VideoExport(data, foldername, filename, fps=15.0, start_frame=1, end_frame=N
                '-crf', '0',
                filename]
 
-    # print(foldername + '/jpeg_%04d.jpeg')
-    #
-    # command = ['ffmpeg.exe',
-    #            '-y',  # (optional) overwrite output file if it exists
-    #            '-f', 'image2pipe',
-    #            #           '-s', '793x1327', # size of one frame
-    #            #'-r', str(fps),  # frames per second
-    #            '-i', '-',  # The input comes from a pipe
-    #            '-an',  # Tells FFMPEG not to expect any audio
-    #            '-q:v', '0',
-    #            #'-crf', '0',
-    #            foldername + '/jpeg_%04d.jpeg']
-    # print(command)
-
-
     # Open the pipe
     pipe = sp.Popen(command, stdin=sp.PIPE)
 
@@ -999,10 +986,25 @@ def VideoExport(data, foldername, filename, fps=15.0, start_frame=1, end_frame=N
         im.save(pipe.stdin, 'JPEG')
 
 
-        dir_abs_path = os.path.dirname(foldername)
-        print(dir_abs_path)
+        #dir_abs_path = os.path.dirname(foldername)
+        print(filename)
         #fp = open(foldername + '/' + str(i) + '.png', 'w')
-        fp = open(os.path.join(dir_abs_path, 'jpeg' + str(i) + '.jpeg'), 'w')
+
+        # Extract the directory path from the input filename
+        directory = os.path.dirname(filename)
+
+        # Extract the file name without extension
+        fn = os.path.splitext(os.path.basename(filename))[0]
+
+        # Create the output file path with the corrected directory and filename
+        output_filepath = os.path.join(directory, fn + '/' + str(i).zfill(5) + '.jpeg')
+
+        # Print the output file path for debugging
+        print("Output file path:", output_filepath)
+
+
+
+        fp = open(output_filepath, 'w+')
         im.save(fp, 'JPEG')
 
     pipe.stdin.close()

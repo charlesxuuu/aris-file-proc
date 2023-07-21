@@ -51,6 +51,7 @@ while (1):
         break
 
     frameCount += 1
+    print("frameCount: " + str(frameCount))
 
     # Resize the frame
     resizedFrame = cv2.resize(frame, (0, 0), fx=0.64, fy=0.64)

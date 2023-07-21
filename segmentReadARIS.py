@@ -5,43 +5,24 @@ overall description of the module or program.  Optionally, it may also
 contain a brief description of exported classes and functions and/or usage
 examples.
 
-Typical usage example:
+Code for extract a raw video file from aris file.
+Notable parameters
+fps aris data provided was 5 fps
 
-foo = ClassFoo()
-bar = foo.FunctionBar()
-
-Image Denoising https://docs.opencv.org/3.4/d5/d69/tutorial_py_non_local_means.html
-cv.fastNlMeansDenoising()
-cv.fastNlMeansDenoisingColored()
-cv.fastNlMeansDenoisingMulti()
-
-Metric
-Scikit Image has an estimate sigma function that works pretty well:
-
-http://scikit-image.org/docs/dev/api/skimage.restoration.html#skimage.restoration.estimate_sigma
-
-it also works with color images, you just need to set multichannel=True and average_sigmas=True:
-
-import cv2
-from skimage.restoration import estimate_sigma
-
-def estimate_noise(image_path):
-    img = cv2.imread(image_path)
-    return estimate_sigma(img, multichannel=True, average_sigmas=True)
+currently output 10 fps  - similar as Caltech dataset
+segment into three regions
 
 """
 
 
 import pyARIS
-import os
+
 import matplotlib.pyplot as plt
 from PIL import Image
 import cv2
 
 filename = r"D:/sonar/segment/2020-05-27_071000.aris"
-#filename = "G:/2020-05-24_000000.aris"
-#filename = "D:/sonar/2020-05-24_000000.aris"
-#filename = "D:/sonar/2020-05-25_020000.aris"
+
 def cutoff_gate(mapped_frame, low, high):
     for i in range(1, int(mapped_frame.size / mapped_frame[0].size) - 1 ):
         for j in range(1, mapped_frame[0].size - 1):
@@ -58,11 +39,9 @@ def main():
     ARISdata, frame = pyARIS.DataImport(filename)
 
     out_file_name = filename[0 : len(filename) - 4] + "mp4"
-    out_folder_name = filename[0 : len(filename) - 5]
-    os.mkdir(out_folder_name)
+    out_folder_name = filename[0 : len(filename) - 5] +
     print("Output File: " + out_file_name)
     print("Output Folder: " + out_folder_name)
-
     # chix: change from frame to ARISdata
     pyARIS.VideoExport(ARISdata, out_folder_name, out_file_name, start_frame=1, timestamp=False, fontsize=30, ts_pos=(10, 1200))
     print("Output Finished")
