@@ -1008,3 +1008,109 @@ def VideoExport(data, foldername, filename, fps=5.0, start_frame=1, end_frame=No
         im.save(fp, 'JPEG')
 
     pipe.stdin.close()
+
+
+
+
+def VideoSegExport(data, out_folder_name_seg1, out_file_name_seg1, fps=5.0, start_frame=1, end_frame=None, timestamp=False,
+                fontsize=30, ts_pos=(0, 0), x=0, y=0, w=0, h=0
+                ):
+    """Output video using the ffmpeg pipeline. The current implementation
+    outputs compresses png files and outputs a mp4.
+
+    Parameters
+    -----------
+    data : (Str) ARIS data structure returned via pyARIS.DataImport()
+    filename : (Str) output filename.  Must include file extension (i.e. 'video.mp4')
+    fps : (Float) Output video frame rate (frames per second). Default = 24 fps
+    start_frame, end_frame : (Int) Range of frames included in the output video
+    timestamp : (Bool) Add the timestamp from the sonar to the video frames
+    fontsize : (Int) Size of timestamp font
+    ts_pos : (Tuple) (x,y) location of the timestamp
+
+    Returns
+    -------
+    Returns a video into the current working directory
+
+    Notes
+    ------
+    Currently this function looks for ffmpeg.exe in the current working directory.
+    Must have the '*.mp4' file extension.
+    Uses the tqdm package to display a status bar.
+
+    Example
+    -------
+    >>> pyARIS.VideoExport(data, 'test_video.mp4', fps = 24)
+
+    """
+
+    # Command to send via the command prompt which specifies the pipe parameters
+    command = ['ffmpeg.exe',
+               '-y',  # (optional) overwrite output file if it exists
+               '-f', 'image2pipe',
+               '-vcodec', 'mjpeg',
+               '-r', '1',
+               #           '-s', '793x1327', # size of one frame
+               '-r', str(fps),  # frames per second
+               '-i', '-',  # The input comes from a pipe
+               '-an',  # Tells FFMPEG not to expect any audio
+               '-vcodec', 'mpeg4',
+               out_file_name_seg1]
+
+    # chix: Command to tune ffmpeg to get better quality
+    command = ['ffmpeg.exe',
+               '-y',  # (optional) overwrite output file if it exists
+               '-f', 'image2pipe',
+               #           '-s', '793x1327', # size of one frame
+               #filter does not apply to image2pipe
+               # #'-filter:v', 'crop=' + str(x) + ':' + str(y) + ":" + str(w) + ":" + str(h),
+               '-r', str(fps),  # frames per second
+               '-i', '-',  # The input comes from a pipe
+               '-an',  # Tells FFMPEG not to expect any audio
+               '-c:v', 'libx264',
+               '-crf', '0',
+               out_file_name_seg1]
+
+    print(command)
+
+    # Open the pipe
+    pipe = sp.Popen(command, stdin=sp.PIPE)
+
+    if end_frame == None:
+        end_frame = data.FrameCount
+
+    # Iterate through the dataframes and push to pipe
+    for i in tqdm.tqdm(range(start_frame - 1, end_frame)):
+        frame = FrameRead(data, i)
+        im = Image.fromarray(frame.remap)
+        cropped_im = im.crop((x, y , x + w, y + h))
+        if timestamp == True:
+            ts = str(datetime.datetime.fromtimestamp(frame.sonartimestamp / 1000000, pytz.timezone('UTC')).strftime(
+                '%Y-%m-%d %H:%M:%S'))
+            draw = ImageDraw.Draw(im)
+            font = ImageFont.truetype("./arial.ttf", fontsize)
+            draw.text(ts_pos, ts, font=font, fill='white')
+        cropped_im.save(pipe.stdin, 'JPEG')
+
+
+        #dir_abs_path = os.path.dirname(foldername)
+        print(out_folder_name_seg1)
+        #fp = open(foldername + '/' + str(i) + '.png', 'w')
+
+        # Extract the directory path from the input filename
+        directory = os.path.dirname(out_file_name_seg1)
+
+        # Extract the file name without extension
+        fn = os.path.splitext(os.path.basename(out_file_name_seg1))[0]
+        if not os.path.exists(out_folder_name_seg1):
+            os.mkdir(out_folder_name_seg1)
+        # Create the output file path with the corrected directory and filename
+        output_filepath = os.path.join(directory, fn + '/' + str(i).zfill(5) + '.jpeg')
+
+        # Print the output file path for debugging
+        print("Output file path:", output_filepath)
+
+        fp = open(output_filepath, 'w+')
+        cropped_im.save(fp, 'JPEG')
+
+    pipe.stdin.close()

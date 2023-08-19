@@ -38,12 +38,21 @@ def main():
 
     ARISdata, frame = pyARIS.DataImport(filename)
 
-    out_file_name = filename[0 : len(filename) - 4] + "mp4"
-    out_folder_name = filename[0 : len(filename) - 5] +
-    print("Output File: " + out_file_name)
-    print("Output Folder: " + out_folder_name)
+
+    out_folder_name_seg1 = filename[0 : len(filename) - 5] + "-seg1"
+    out_file_name_seg1 = filename[0 : len(filename) - 5] + "-seg1.mp4"
+    out_folder_name_seg2 = filename[0 : len(filename) - 5] + "-seg2"
+    out_file_name_seg2 = filename[0 : len(filename) - 5] + "-seg2.mp4"
+    out_folder_name_seg3 = filename[0 : len(filename) - 5] + "-seg3"
+    out_file_name_seg3 = filename[0 : len(filename) - 5] + "-seg3.mp4"
+
+    print("Output Folder: " + out_folder_name_seg2)
+    print("Output File: " + out_file_name_seg2)
+
     # chix: change from frame to ARISdata
-    pyARIS.VideoExport(ARISdata, out_folder_name, out_file_name, start_frame=1, timestamp=False, fontsize=30, ts_pos=(10, 1200))
+    pyARIS.VideoSegExport(ARISdata, out_folder_name_seg1, out_file_name_seg1, start_frame=1, timestamp=False, fontsize=30, ts_pos=(10, 1200), x=208 ,y=890, w=206, h=392)
+    pyARIS.VideoSegExport(ARISdata, out_folder_name_seg2, out_file_name_seg2, start_frame=1, timestamp=False, fontsize=30, ts_pos=(10, 1200), x=107 ,y=462, w=408, h=428)
+    pyARIS.VideoSegExport(ARISdata, out_folder_name_seg3, out_file_name_seg3, start_frame=1, timestamp=False, fontsize=30, ts_pos=(10, 1200), x=5 ,y=0, w=612, h=462)
     print("Output Finished")
 
 
