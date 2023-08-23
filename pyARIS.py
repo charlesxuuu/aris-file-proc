@@ -390,7 +390,7 @@ def DataImport(filename, startFrame=1, frameBuffer=0):
     VersionMinor = struct.unpack('I', data.read(4))[0]
     LargeLens = struct.unpack('I', data.read(4))[0]
 
-    print("NumRawBeams:" + str(NumRawBeams))
+    # print("NumRawBeams:" + str(NumRawBeams))
 
     # Create data structure
     try:
