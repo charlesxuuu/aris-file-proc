@@ -30,7 +30,6 @@ ffmpeg.exe
 #Ignore compiled files
 *.pyc
 
-<<<<<<< HEAD
 #Ignore any profiling files
 *.lprof
 
@@ -40,7 +39,3 @@ ARIS_FG_Filewalker.py
 ARIS_2021_Working_File.py
 ARIS_Tracker.py
 ARIS_2021_Working_File
-=======
-#Ignore my test files
-ARIS_Read.py
->>>>>>> a5a1429efb1d1e1387741cfc295c3782fccfab5e
