@@ -39,3 +39,7 @@ ARIS_FG_Filewalker.py
 ARIS_2021_Working_File.py
 ARIS_Tracker.py
 ARIS_2021_Working_File
+
+#Ignore test output and source files
+output/
+sonar/
