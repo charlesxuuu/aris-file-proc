@@ -92,7 +92,7 @@ def processSonarData(folderName, count):
     print("Processing %s" %(folderName), flush=True)
     oneDaySonarDataFolder = os.path.join(sonarDataDir, folderName)
 
-    progressBar = tqdm(total=len(os.listdir(oneDaySonarDataFolder)), position=count, leave=False)
+    progressBar = tqdm(total=len(os.listdir(oneDaySonarDataFolder)), position=count, desc=folderName)
 
     for item in os.listdir(oneDaySonarDataFolder):
         if os.path.isfile(os.path.join(oneDaySonarDataFolder, item)):
@@ -100,7 +100,9 @@ def processSonarData(folderName, count):
                 segmentARISFile(os.path.join(oneDaySonarDataFolder, item), folderName, item)
             else:
                 print("%s is not an ARIS file, skip" %(os.path.join(oneDaySonarDataFolder, item)))
-        progressBar.update(1)
+            progressBar.update(1)
+            progressBar.refresh()
+    progressBar.close()
 
 def processAllARISFiles():
     pList = []
@@ -116,8 +118,7 @@ def processAllARISFiles():
     for p in pList:
         p.join()
 
-    time.sleep(1)
-    print("All done!")
+    print("\n\nAll done!", flush=True)
 
 if __name__ == "__main__":
     processAllARISFiles()
