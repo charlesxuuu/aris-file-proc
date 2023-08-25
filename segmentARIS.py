@@ -55,13 +55,13 @@ def cropBlackBorderFirstRow(img):
 
     return img[:, leftX:rightX]
 
-def saveCroppedImage(segment1, segment2, segment3, ARISfolderName, ARISFileName, i):
-    folder_path = os.path.join(outputDir, ARISfolderName, ARISFileName[:-5])
-    create_folder(folder_path)
+def saveCroppedImage(segment1, segment2, segment3, ARISfolderName, ARISFileName, frameNum):
+    imgList = [segment1, segment2, segment3]
 
-    cv2.imwrite(os.path.join(folder_path, "%d_seg1.jpeg" %(i)), segment1)
-    cv2.imwrite(os.path.join(folder_path, "%d_seg2.jpeg" %(i)), segment2)
-    cv2.imwrite(os.path.join(folder_path, "%d_seg3.jpeg" %(i)), segment3)
+    for i in range(3):
+        folder_path = os.path.join(outputDir, "%s_seg%s" %(ARISFileName[:-5], i))
+        create_folder(folder_path)
+        cv2.imwrite(os.path.join(folder_path, "%d.jpg" %(frameNum)), imgList[i])
 
 def segmentARISFile(filePath, ARISfolderName, ARISFileName):
     ARISdata, _ = pyARIS.DataImport(filePath)
@@ -70,16 +70,7 @@ def segmentARISFile(filePath, ARISfolderName, ARISFileName):
     for i in range(ARISdata.FrameCount):
         frameData = pyARIS.FrameRead(ARISdata, i).remap
         convertedFrame = cv2.cvtColor(frameData, cv2.COLOR_GRAY2BGR)
-
-        # segment1 = convertedFrame[:462,:]
-        # segment2 = convertedFrame[462:462+428,:]
-        # segment3 = convertedFrame[890:,:]
-        # plt.figure(figsize=(15, 6))
-        # plt.tight_layout()
-        # plt.subplot(131), plt.imshow(cropBlackBorder(segment1))
-        # plt.subplot(132), plt.imshow(cropBlackBorder(segment2))
-        # plt.subplot(133), plt.imshow(cropBlackBorderFirstRow(segment3))
-
+        
         segment1 = cropBlackBorder(convertedFrame[:462,:])
         segment2 = cropBlackBorder(convertedFrame[462:462+428,:])
         segment3 = cropBlackBorderFirstRow(convertedFrame[890:,:])
