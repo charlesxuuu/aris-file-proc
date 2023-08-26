@@ -43,6 +43,7 @@ ARIS_2021_Working_File
 #Ignore test output and source files
 output/
 sonar/
+<<<<<<< HEAD
 #ignores the SoundMetrics directory
 /aris-file-sdk-master
 
@@ -608,3 +609,6 @@ crashlytics-build.properties
 fabric.properties
 
 Haida_2020/
+=======
+example_annotation/
+>>>>>>> 9f27881 (created  annotation_converter.py)

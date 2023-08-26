@@ -1,17 +1,18 @@
+# read .aris file and convert segment each frame into 3 parts and save them into output folder
 import cv2
 import time
 import pyARIS
 import threading
 import subprocess
 import numpy as np
-from myUtils import *
+from my_utils import *
 from PIL import Image
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 from multiprocessing import Process
 
 outputDir = "./output/"
-sonarDataDir = "./sonar/"
+sonarDataDir = "./sonar/ARIS/"
 
 # Crops the left and right black borders of the image
 # This function check the entire column of the image from both left and right
