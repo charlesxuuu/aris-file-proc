@@ -43,3 +43,4 @@ ARIS_2021_Working_File
 #Ignore test output and source files
 output/
 sonar/
+example_annotation/
