@@ -1009,8 +1009,67 @@ def VideoExport(data, foldername, filename, fps=5.0, start_frame=1, end_frame=No
 
     pipe.stdin.close()
 
+def VideoExportOriginal(data, filename, fps = 24.0, start_frame = 1, end_frame = None, timestamp = False, fontsize = 30, ts_pos = (0,0)):
+    """Output video using the ffmpeg pipeline. The current implementation 
+    outputs compresses png files and outputs a mp4.
+    
+    Parameters
+    -----------
+    data : (Str) ARIS data structure returned via pyARIS.DataImport()
+    filename : (Str) output filename.  Must include file extension (i.e. 'video.mp4')
+    fps : (Float) Output video frame rate (frames per second). Default = 24 fps
+    start_frame, end_frame : (Int) Range of frames included in the output video 
+    timestamp : (Bool) Add the timestamp from the sonar to the video frames
+    fontsize : (Int) Size of timestamp font 
+    ts_pos : (Tuple) (x,y) location of the timestamp
+    
+    Returns
+    -------
+    Returns a video into the current working directory
+    
+    Notes
+    ------
+    Currently this function looks for ffmpeg.exe in the current working directory.
+    Must have the '*.mp4' file extension.
+    Uses the tqdm package to display a status bar.
+    
+    Example
+    -------
+    >>> pyARIS.VideoExport(data, 'test_video.mp4', fps = 24)
+    
+    """
+    
+    command = ['ffmpeg',
+               '-y',  # (optional) overwrite output file if it exists
+               '-f', 'image2pipe',
+               #           '-s', '793x1327', # size of one frame
+               #filter does not apply to image2pipe
+               # #'-filter:v', 'crop=' + str(x) + ':' + str(y) + ":" + str(w) + ":" + str(h),
+               '-r', str(fps),  # frames per second
+               '-i', '-',  # The input comes from a pipe
+               '-an',  # Tells FFMPEG not to expect any audio
+               '-c:v', 'libx264',
+               '-crf', '0',
+               filename]
 
+    #Open the pipe
+    pipe = sp.Popen(command, stdin=sp.PIPE)
 
+    if end_frame == None:
+        end_frame = data.FrameCount
+ 
+    #Iterate through the dataframes and push to pipe       
+    for i in tqdm.tqdm(range(start_frame-1, end_frame)):
+        frame = FrameRead(data, i)
+        im = Image.fromarray(frame.remap)
+        if timestamp == True:
+            ts = str(datetime.datetime.fromtimestamp(frame.sonartimestamp/1000000, pytz.timezone('UTC')).strftime('%Y-%m-%d %H:%M:%S'))
+            draw = ImageDraw.Draw(im)
+            font = ImageFont.truetype("./arial.ttf", fontsize)
+            draw.text(ts_pos,ts,font=font, fill = 'white')
+        im.save(pipe.stdin, 'JPEG')
+
+    pipe.stdin.close()
 
 def VideoSegExport(data, out_folder_name_seg1, out_file_name_seg1, fps=5.0, start_frame=1, end_frame=None, timestamp=False,
                 fontsize=30, ts_pos=(0, 0), x=0, y=0, w=0, h=0
