@@ -11,7 +11,7 @@ from tqdm import tqdm
 import matplotlib.pyplot as plt
 from multiprocessing import Process
 
-outputDir = "./output/"
+outputDir = "./output/segmented_frames/"
 sonarDataDir = "./sonar/ARIS/"
 
 # Crops the left and right black borders of the image
