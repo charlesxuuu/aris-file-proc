@@ -2,6 +2,7 @@ import numpy as np
 import cv2
 
 file_path = "D:/sonar/2020-05-27_071000.mp4"
+file_path = "G:/2020-05-24_000000.aris"
 
 cap = cv2.VideoCapture(file_path)
 first_iter = True
