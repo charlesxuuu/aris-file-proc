@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="utf-8"?>
+<annotations>
+  <version>1.1</version>
+  <meta>
+    <task>
+      <id>64</id>
+      <name>2020-05-31_015000</name>
+      <size>1849</size>
+      <mode>interpolation</mode>
+      <overlap>5</overlap>
+      <bugtracker></bugtracker>
+      <created>2022-04-30 17:48:00.909489+00:00</created>
+      <updated>2022-04-30 17:52:20.342032+00:00</updated>
+      <subset>default</subset>
+      <start_frame>0</start_frame>
+      <stop_frame>1848</stop_frame>
+      <frame_filter></frame_filter>
+      <segments>
+        <segment>
+          <id>62</id>
+          <start>0</start>
+          <stop>1848</stop>
+          <url>httplocalhost:8080/?id=62</url>
+        </segment>
+      </segments>
+      <owner>
+        <username>django</username>
+        <email></email>
+      </owner>
+      <assignee></assignee>
+      <labels>
+        <label>
+          <name>Salmon</name>
+          <color>#ff6037</color>
+          <attributes>
+            <attribute>
+              <name>Confidence Level</name>
+              <mutable>False</mutable>
+              <input_type>select</input_type>
+              <default_value>3</default_value>
+              <values>3
+2
+1</values>
+            </attribute>
+            <attribute>
+              <name>Size (cm)</name>
+              <mutable>False</mutable>
+              <input_type>number</input_type>
+              <default_value>0</default_value>
+              <values>0
+500
+0.1</values>
+            </attribute>
+            <attribute>
+              <name>Notes</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>NA</default_value>
+              <values>NA</values>
+            </attribute>
+          </attributes>
+        </label>
+        <label>
+          <name>Otter</name>
+          <color>#5986b3</color>
+          <attributes>
+            <attribute>
+              <name>Confidence Level</name>
+              <mutable>False</mutable>
+              <input_type>select</input_type>
+              <default_value>3</default_value>
+              <values>3
+2
+1</values>
+            </attribute>
+            <attribute>
+              <name>Size (cm)</name>
+              <mutable>False</mutable>
+              <input_type>number</input_type>
+              <default_value>0</default_value>
+              <values>0
+500
+0.1</values>
+            </attribute>
+            <attribute>
+              <name>Notes</name>
+              <mutable>False</mutable>
+              <input_type>text</input_type>
+              <default_value>NA</default_value>
+              <values>NA</values>
+            </attribute>
+          </attributes>
+        </label>
+      </labels>
+      <original_size>
+        <width>620</width>
+        <height>1278</height>
+      </original_size>
+    </task>
+    <dumped>2022-04-30 17:52:31.604362+00:00</dumped>
+    <source>2020-05-31_015000.mp4</source>
+  </meta>
+  <track id="0" label="Salmon" source="manual">
+    <box frame="1578" outside="0" occluded="1" keyframe="1" xtl="227.49" ytl="1113.68" xbr="302.65" ybr="1154.16" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1579" outside="0" occluded="1" keyframe="1" xtl="236.16" ytl="1113.69" xbr="311.32" ybr="1154.16" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1580" outside="0" occluded="1" keyframe="0" xtl="241.22" ytl="1112.96" xbr="316.38" ybr="1153.44" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1581" outside="0" occluded="1" keyframe="1" xtl="246.28" ytl="1112.24" xbr="321.44" ybr="1152.71" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1582" outside="0" occluded="1" keyframe="0" xtl="247.74" ytl="1112.24" xbr="322.90" ybr="1152.71" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1583" outside="0" occluded="1" keyframe="0" xtl="249.20" ytl="1112.24" xbr="324.37" ybr="1152.71" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1584" outside="0" occluded="1" keyframe="0" xtl="250.67" ytl="1112.24" xbr="325.83" ybr="1152.71" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1585" outside="0" occluded="1" keyframe="0" xtl="252.13" ytl="1112.24" xbr="327.29" ybr="1152.71" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1586" outside="0" occluded="1" keyframe="0" xtl="253.59" ytl="1112.24" xbr="328.76" ybr="1152.71" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1587" outside="0" occluded="1" keyframe="0" xtl="255.06" ytl="1112.24" xbr="330.22" ybr="1152.71" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1588" outside="0" occluded="1" keyframe="0" xtl="256.52" ytl="1112.24" xbr="331.69" ybr="1152.71" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1589" outside="0" occluded="1" keyframe="0" xtl="257.99" ytl="1112.24" xbr="333.15" ybr="1152.71" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1590" outside="0" occluded="1" keyframe="0" xtl="259.45" ytl="1112.24" xbr="334.61" ybr="1152.71" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1591" outside="0" occluded="1" keyframe="1" xtl="260.91" ytl="1112.24" xbr="336.08" ybr="1152.71" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1592" outside="0" occluded="1" keyframe="0" xtl="261.33" ytl="1110.57" xbr="336.50" ybr="1151.04" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1593" outside="0" occluded="1" keyframe="0" xtl="261.75" ytl="1108.89" xbr="336.91" ybr="1149.37" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1594" outside="0" occluded="1" keyframe="0" xtl="262.17" ytl="1107.22" xbr="337.33" ybr="1147.69" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1595" outside="0" occluded="1" keyframe="0" xtl="262.59" ytl="1105.55" xbr="337.75" ybr="1146.02" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1596" outside="0" occluded="0" keyframe="1" xtl="263.00" ytl="1103.88" xbr="338.17" ybr="1144.35" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1597" outside="0" occluded="0" keyframe="0" xtl="266.63" ytl="1102.76" xbr="341.79" ybr="1143.23" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1598" outside="0" occluded="0" keyframe="0" xtl="270.25" ytl="1101.65" xbr="345.42" ybr="1142.12" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1599" outside="0" occluded="0" keyframe="0" xtl="273.88" ytl="1100.53" xbr="349.04" ybr="1141.00" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1600" outside="0" occluded="0" keyframe="0" xtl="277.50" ytl="1099.42" xbr="352.67" ybr="1139.89" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1601" outside="0" occluded="0" keyframe="1" xtl="281.13" ytl="1098.30" xbr="356.29" ybr="1138.77" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1602" outside="0" occluded="0" keyframe="0" xtl="282.76" ytl="1099.58" xbr="357.92" ybr="1140.05" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1603" outside="0" occluded="0" keyframe="0" xtl="284.38" ytl="1100.86" xbr="359.54" ybr="1141.33" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1604" outside="0" occluded="0" keyframe="0" xtl="286.01" ytl="1102.13" xbr="361.17" ybr="1142.61" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1605" outside="0" occluded="0" keyframe="0" xtl="287.63" ytl="1103.41" xbr="362.80" ybr="1143.88" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1606" outside="0" occluded="0" keyframe="0" xtl="289.26" ytl="1104.69" xbr="364.42" ybr="1145.16" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1607" outside="0" occluded="0" keyframe="1" xtl="290.89" ytl="1105.97" xbr="366.05" ybr="1146.44" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1608" outside="0" occluded="0" keyframe="0" xtl="291.76" ytl="1108.93" xbr="366.92" ybr="1149.40" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1609" outside="0" occluded="0" keyframe="0" xtl="292.63" ytl="1111.89" xbr="367.79" ybr="1152.37" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1610" outside="0" occluded="0" keyframe="0" xtl="293.50" ytl="1114.85" xbr="368.66" ybr="1155.33" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1611" outside="0" occluded="0" keyframe="1" xtl="294.37" ytl="1117.82" xbr="369.54" ybr="1158.29" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1612" outside="0" occluded="0" keyframe="0" xtl="294.37" ytl="1117.82" xbr="369.54" ybr="1158.29" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1613" outside="0" occluded="1" keyframe="1" xtl="294.37" ytl="1117.82" xbr="369.54" ybr="1158.29" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1614" outside="0" occluded="1" keyframe="1" xtl="294.37" ytl="1125.49" xbr="369.54" ybr="1165.96" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1615" outside="0" occluded="1" keyframe="0" xtl="296.76" ytl="1125.78" xbr="371.93" ybr="1166.26" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1616" outside="0" occluded="1" keyframe="0" xtl="299.15" ytl="1126.08" xbr="374.32" ybr="1166.56" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1617" outside="0" occluded="1" keyframe="0" xtl="301.54" ytl="1126.38" xbr="376.71" ybr="1166.85" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1618" outside="0" occluded="1" keyframe="0" xtl="303.93" ytl="1126.68" xbr="379.10" ybr="1167.15" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1619" outside="0" occluded="1" keyframe="0" xtl="306.32" ytl="1126.98" xbr="381.49" ybr="1167.45" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1620" outside="0" occluded="1" keyframe="0" xtl="308.71" ytl="1127.28" xbr="383.88" ybr="1167.75" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1621" outside="0" occluded="1" keyframe="1" xtl="311.10" ytl="1127.58" xbr="386.27" ybr="1168.05" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1622" outside="0" occluded="1" keyframe="0" xtl="311.10" ytl="1127.58" xbr="386.27" ybr="1168.05" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1623" outside="0" occluded="1" keyframe="0" xtl="311.10" ytl="1127.58" xbr="386.27" ybr="1168.05" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1624" outside="0" occluded="1" keyframe="0" xtl="311.10" ytl="1127.58" xbr="386.27" ybr="1168.05" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+    <box frame="1625" outside="1" occluded="1" keyframe="1" xtl="311.10" ytl="1127.58" xbr="386.27" ybr="1168.05" rotation="359.90" z_order="0">
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">53</attribute>
+      <attribute name="Notes">NA</attribute>
+    </box>
+  </track>
+  <track id="1" label="Salmon" source="manual">
+    <box frame="0" outside="0" occluded="0" keyframe="1" xtl="285.16" ytl="1095.69" xbr="349.00" ybr="1136.64" z_order="0">
+      <attribute name="Notes">NA</attribute>
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">58</attribute>
+    </box>
+    <box frame="1" outside="0" occluded="0" keyframe="1" xtl="280.34" ytl="1098.10" xbr="344.18" ybr="1139.05" z_order="0">
+      <attribute name="Notes">NA</attribute>
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">58</attribute>
+    </box>
+    <box frame="2" outside="0" occluded="0" keyframe="1" xtl="274.32" ytl="1092.08" xbr="338.16" ybr="1133.03" z_order="0">
+      <attribute name="Notes">NA</attribute>
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">58</attribute>
+    </box>
+    <box frame="3" outside="0" occluded="0" keyframe="1" xtl="264.68" ytl="1087.26" xbr="328.52" ybr="1128.21" z_order="0">
+      <attribute name="Notes">NA</attribute>
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">58</attribute>
+    </box>
+    <box frame="4" outside="0" occluded="0" keyframe="1" xtl="257.45" ytl="1081.23" xbr="321.29" ybr="1122.19" z_order="0">
+      <attribute name="Notes">NA</attribute>
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">58</attribute>
+    </box>
+    <box frame="5" outside="0" occluded="0" keyframe="0" xtl="251.43" ytl="1078.83" xbr="315.27" ybr="1119.78" z_order="0">
+      <attribute name="Notes">NA</attribute>
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">58</attribute>
+    </box>
+    <box frame="6" outside="0" occluded="1" keyframe="1" xtl="245.41" ytl="1076.42" xbr="309.25" ybr="1117.37" z_order="0">
+      <attribute name="Notes">NA</attribute>
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">58</attribute>
+    </box>
+    <box frame="7" outside="0" occluded="1" keyframe="0" xtl="245.41" ytl="1076.42" xbr="309.25" ybr="1117.37" z_order="0">
+      <attribute name="Notes">NA</attribute>
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">58</attribute>
+    </box>
+    <box frame="8" outside="0" occluded="1" keyframe="0" xtl="245.41" ytl="1076.42" xbr="309.25" ybr="1117.37" z_order="0">
+      <attribute name="Notes">NA</attribute>
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">58</attribute>
+    </box>
+    <box frame="9" outside="0" occluded="1" keyframe="0" xtl="245.41" ytl="1076.42" xbr="309.25" ybr="1117.37" z_order="0">
+      <attribute name="Notes">NA</attribute>
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">58</attribute>
+    </box>
+    <box frame="10" outside="1" occluded="1" keyframe="1" xtl="245.41" ytl="1076.42" xbr="309.25" ybr="1117.37" z_order="0">
+      <attribute name="Notes">NA</attribute>
+      <attribute name="Confidence Level">3</attribute>
+      <attribute name="Size (cm)">58</attribute>
+    </box>
+  </track>
+</annotations>
