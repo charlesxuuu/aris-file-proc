@@ -121,6 +121,6 @@ def segment_coco_annotation():
             reconstruct_coco_annotation(annotation_file_path, annotation_folder_path)
 
 if __name__ == "__main__":
-    # preprocess_data_and_generate_csv_file()
-    # convert_annotation_to_coco()
+    preprocess_data_and_generate_csv_file()
+    convert_annotation_to_coco()
     segment_coco_annotation()
