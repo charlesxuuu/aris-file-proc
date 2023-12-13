@@ -16,13 +16,16 @@ from dateutil import parser
 import matplotlib.pyplot as plt
 from multiprocessing import Process
 
-outputDir = "./output/processed_sonar/"
-sonarDataDir = "./sonar/"
+arisFolderPath = "./sonar/"
 salmonNoteFolderPath = "./sonar/notes/"
 outputVideoPath = "./output/"
 numFramesBefore = 10
-numFramesAfter = 20
+numFramesAfter = 50
 numFramesToBeConsideredTogether = 20
+
+# * Deprecated
+outputDir = "./output/processed_sonar/"
+sonarDataDir = "./sonar/"
 
 def covertARISToVideo(ARISFilePath, outputVideoPath, startFrame=1, endFrame=None):
     ARISdata, _ = pyARIS.DataImport(ARISFilePath)
@@ -79,21 +82,24 @@ def read_salmon_note():
 
 def process_salmon_note(start, end, allSalmonNote):
     currentRow = start
-    while True:
+    totalRows = allSalmonNote.shape[0]
+
+    while currentRow <= end:
         row = allSalmonNote.iloc[currentRow]
         startFrame = row["frameNumber"] - numFramesBefore # ! This might be less than 0
         endFrame = row["frameNumber"] + numFramesAfter # ! This might be greater than the total number of frames
         group = row["group"]
         fileName = "{}_{}.aris".format(row["fileNameDatePrefix"], row["fileNameTimePrefix"])
         folderName = row["folderName"]
-        arisFilePath = "./%s/%s" % (folderName, fileName)
+        arisFilePath = "%s%s/%s" % (arisFolderPath, folderName, fileName)
+        videoPathFolder = outputVideoPath + "Haida_%s/" % (row["fileNameDatePrefix"])
         videoPath = outputVideoPath + "Haida_%s/%s_%s_%s-%s.mp4" % (row["fileNameDatePrefix"], 
                                                                     row["fileNameDatePrefix"], 
                                                                     row["fileNameTimePrefix"], 
                                                                     startFrame, 
                                                                     endFrame)
         tempRow = currentRow
-        for _, row in allSalmonNote.iloc[tempRow+1:].iterrows():
+        for _, row in allSalmonNote.iloc[tempRow+1:totalRows].iterrows():
             if row["group"] == group:
                 endFrame = row["frameNumber"] + numFramesAfter
                 currentRow += 1
@@ -102,13 +108,11 @@ def process_salmon_note(start, end, allSalmonNote):
                 break
 
         if os.path.isfile(arisFilePath):
+            create_folder(videoPathFolder)
             covertARISToVideo(arisFilePath, videoPath,startFrame=startFrame, endFrame=endFrame)
-            break
         else:
             print("File %s does not exist" %(arisFilePath))
-
-        if currentRow > end:
-            break
+            currentRow += 1
     
     print("Done processing %s to %s" %(start, end), flush=True)
 
@@ -157,12 +161,11 @@ if __name__ == "__main__":
     allSalmonNote = read_salmon_note()
 
     # * get number of rows in the dataframe
-    num_rows = allSalmonNote.shape[0]
+    num_rows = allSalmonNote.shape[0] - 1
     print("num_rows: %s" %(num_rows))
     for i in range(num_cores):
         start = int(i * num_rows / num_cores)
         end = int((i+1) * num_rows / num_cores)
-        print("start: %s, end: %s" %(start, end))
         p = Process(target=process_salmon_note, args=(start, end, allSalmonNote))
         p.start()
         pList.append(p)
@@ -170,4 +173,7 @@ if __name__ == "__main__":
     for p in pList:
         p.join()
 
+    # process_salmon_note(3510, allSalmonNote.shape[0], allSalmonNote)
+    
+    time.sleep(3) # * so all the print statements can be printed
     print("\n\nAll done!", flush=True)
