@@ -154,6 +154,7 @@ def processAllARISFiles():
     
     print("\n\nAll done!", flush=True)
 
+# ! LF Haida SOnar Data 2020 - LF not processed
 if __name__ == "__main__":
     pList = []
     # get number of cores
