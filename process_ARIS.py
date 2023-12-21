@@ -107,12 +107,12 @@ def process_salmon_note(start, end, allSalmonNote, fps):
                 endFrame = row["frameNumber"] + numFramesAfter
                 currentRow += 1
             else:
-                currentRow += 1
                 break
+        currentRow += 1
 
         if os.path.isfile(arisFilePath):
             create_folder(videoPathFolder)
-            covertARISToVideo(arisFilePath, videoPath,startFrame=startFrame, endFrame=endFrame, fps=24)
+            covertARISToVideo(arisFilePath, videoPath,startFrame=startFrame, endFrame=endFrame, fps=fps)
         else:
             # print("File %s does not exist" %(arisFilePath))
             pass
@@ -160,16 +160,19 @@ def processAllARISFiles():
 # ! LF Haida SOnar Data 2020 - LF not processed
 if __name__ == "__main__":
     pList = []
-    fps = 24
+    fps = 5
     num_cores = multiprocessing.cpu_count() # get number of cores
     allSalmonNote = read_salmon_note()
 
     # * get number of rows in the dataframe
-    num_rows = allSalmonNote.shape[0] - 1
+    num_rows = allSalmonNote.shape[0]
     print("num_rows: %s" %(num_rows))
     for i in range(num_cores):
         start = int(i * num_rows / num_cores)
         end = int((i+1) * num_rows / num_cores)
+
+        if i == num_cores - 1:
+            end = num_rows - 1
         p = Process(target=process_salmon_note, args=(start, end, allSalmonNote, fps))
         p.start()
         pList.append(p)
@@ -177,7 +180,7 @@ if __name__ == "__main__":
     for p in pList:
         p.join()
 
-    # process_salmon_note(3510, allSalmonNote.shape[0], allSalmonNote, fps)
+    # process_salmon_note(3510, 3530, allSalmonNote, fps)
     
     time.sleep(3) # * so all the print statements can be printed
     print("\n\nAll done!", flush=True)
