@@ -27,13 +27,14 @@ numFramesToBeConsideredTogether = 20
 outputDir = "./output/processed_sonar/"
 sonarDataDir = "./sonar/"
 
-def covertARISToVideo(ARISFilePath, outputVideoPath, startFrame=1, endFrame=None):
+def covertARISToVideo(ARISFilePath, outputVideoPath, startFrame=1, endFrame=None, fps=24):
     ARISdata, _ = pyARIS.DataImport(ARISFilePath)
     pyARIS.VideoExportOriginal_NoProgressBar(
         ARISdata,
         start_frame=startFrame,
         end_frame=endFrame,
-        filename=outputVideoPath)
+        filename=outputVideoPath,
+        fps=fps)
 
 def date_convert_helper(date):
     if "-" not in date:
@@ -80,7 +81,7 @@ def read_salmon_note():
     allSalmonNote.to_csv("allSalmonNote.csv", index=False)
     return allSalmonNote
 
-def process_salmon_note(start, end, allSalmonNote):
+def process_salmon_note(start, end, allSalmonNote, fps):
     currentRow = start
     totalRows = allSalmonNote.shape[0]
 
@@ -109,9 +110,9 @@ def process_salmon_note(start, end, allSalmonNote):
 
         if os.path.isfile(arisFilePath):
             create_folder(videoPathFolder)
-            covertARISToVideo(arisFilePath, videoPath,startFrame=startFrame, endFrame=endFrame)
+            covertARISToVideo(arisFilePath, videoPath,startFrame=startFrame, endFrame=endFrame, fps=24)
         else:
-            print("File %s does not exist" %(arisFilePath))
+            # print("File %s does not exist" %(arisFilePath))
             currentRow += 1
     
     print("Done processing %s to %s" %(start, end), flush=True)
@@ -157,8 +158,8 @@ def processAllARISFiles():
 # ! LF Haida SOnar Data 2020 - LF not processed
 if __name__ == "__main__":
     pList = []
-    # get number of cores
-    num_cores = multiprocessing.cpu_count()
+    fps = 24
+    num_cores = multiprocessing.cpu_count() # get number of cores
     allSalmonNote = read_salmon_note()
 
     # * get number of rows in the dataframe
@@ -167,14 +168,14 @@ if __name__ == "__main__":
     for i in range(num_cores):
         start = int(i * num_rows / num_cores)
         end = int((i+1) * num_rows / num_cores)
-        p = Process(target=process_salmon_note, args=(start, end, allSalmonNote))
+        p = Process(target=process_salmon_note, args=(start, end, allSalmonNote, fps))
         p.start()
         pList.append(p)
     
     for p in pList:
         p.join()
 
-    # process_salmon_note(3510, allSalmonNote.shape[0], allSalmonNote)
+    # process_salmon_note(3510, allSalmonNote.shape[0], allSalmonNote, fps)
     
     time.sleep(3) # * so all the print statements can be printed
     print("\n\nAll done!", flush=True)
