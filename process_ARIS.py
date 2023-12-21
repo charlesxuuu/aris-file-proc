@@ -115,7 +115,7 @@ def process_salmon_note(start, end, allSalmonNote, fps):
             covertARISToVideo(arisFilePath, videoPath,startFrame=startFrame, endFrame=endFrame, fps=24)
         else:
             # print("File %s does not exist" %(arisFilePath))
-            currentRow += 1
+            pass
     
     print("Done processing %s to %s" %(start, end), flush=True)
 
