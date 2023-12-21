@@ -1071,7 +1071,7 @@ def VideoExportOriginal(data, filename, fps = 24.0, start_frame = 1, end_frame =
 
     pipe.stdin.close()
 
-def VideoExportOriginal_NoProgressBar(data, filename, fps = 24.0, start_frame = 1, end_frame = None, timestamp = False, fontsize = 30, ts_pos = (0,0)):
+def VideoExportOriginal_NoProgressBar(data, filename, fps = 24.0, start_frame = 1, end_frame = None, timestamp = False, fontsize = 30, ts_pos = (0,0), osPlatform = 'Linux'):
     """Output video using the ffmpeg pipeline. The current implementation 
     outputs compresses png files and outputs a mp4.
     
@@ -1101,12 +1101,24 @@ def VideoExportOriginal_NoProgressBar(data, filename, fps = 24.0, start_frame = 
     
     """
     
-    command = ['ffmpeg',
+    if osPlatform == 'Linux':
+        command = ['ffmpeg',
+                '-y',  # (optional) overwrite output file if it exists
+                '-f', 'image2pipe',
+                #           '-s', '793x1327', # size of one frame
+                #filter does not apply to image2pipe
+                # #'-filter:v', 'crop=' + str(x) + ':' + str(y) + ":" + str(w) + ":" + str(h),
+                '-r', str(fps),  # frames per second
+                '-i', '-',  # The input comes from a pipe
+                '-an',  # Tells FFMPEG not to expect any audio
+                '-c:v', 'libx264',
+                '-crf', '0',
+                filename]
+    elif osPlatform == 'Windows':
+        command = ['ffmpeg.exe',
                '-y',  # (optional) overwrite output file if it exists
                '-f', 'image2pipe',
                #           '-s', '793x1327', # size of one frame
-               #filter does not apply to image2pipe
-               # #'-filter:v', 'crop=' + str(x) + ':' + str(y) + ":" + str(w) + ":" + str(h),
                '-r', str(fps),  # frames per second
                '-i', '-',  # The input comes from a pipe
                '-an',  # Tells FFMPEG not to expect any audio

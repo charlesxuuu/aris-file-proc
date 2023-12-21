@@ -2,6 +2,7 @@
 import re
 import csv
 import time
+import platform
 import pyARIS
 import threading
 import subprocess
@@ -34,7 +35,8 @@ def covertARISToVideo(ARISFilePath, outputVideoPath, startFrame=1, endFrame=None
         start_frame=startFrame,
         end_frame=endFrame,
         filename=outputVideoPath,
-        fps=fps)
+        fps=fps,
+        osPlatform=platform.system())
 
 def date_convert_helper(date):
     if "-" not in date:
