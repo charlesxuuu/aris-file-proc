@@ -1130,9 +1130,9 @@ def VideoExportOriginal_NoProgressBar(data, filename, fps = 24.0, start_frame = 
     pipe = sp.Popen(command, stdin=sp.PIPE)
     totalFrames = data.FrameCount
 
-    if end_frame == None or end_frame > totalFrames:
-        end_frame = data.FrameCount
-    if start_frame < 1:
+    if end_frame == None or end_frame > totalFrames or end_frame < 0:
+        end_frame = totalFrames
+    if start_frame < 1 or start_frame > totalFrames:
         start_frame = 1
  
     #Iterate through the dataframes and push to pipe       

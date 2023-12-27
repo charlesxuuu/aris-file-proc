@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 from multiprocessing import Process
 
 arisFolderPath = "./sonar/"
-salmonNoteFolderPath = "./sonar/notes/"
+salmonNoteFolderPath = "./sonar/notes2/"
 outputVideoPath = "./output/"
 numFramesBefore = 10
 numFramesAfter = 50
@@ -52,13 +52,14 @@ def read_salmon_note():
         filePath = os.path.join(salmonNoteFolderPath, item)
         print(filePath)
         if os.path.isfile(filePath) and item.endswith(".csv"):
-            # ! Ignore LF Haida Sonar file for now
-            if "LF" not in item:
+            # # ! Ignore LF Haida Sonar file for now
+            # if "LF" not in item:
+            if True: # * use this if LF Haida Sonar file is fixed
                 salmonNote = pd.read_csv(filePath)[["Date","Timefile","Time","Frame"]].dropna()
                 allSalmonNote = pd.concat([allSalmonNote, salmonNote])
     
     allSalmonNote = allSalmonNote.reset_index(drop=True)
-    allSalmonNote["frameNumber"] = allSalmonNote["Frame"].apply(lambda x: int(x[:-5])) # extract frame number
+    allSalmonNote["frameNumber"] = allSalmonNote["Frame"].apply(lambda x: int(re.findall(r"^-?\d+", x)[0])) # extract frame number
     allSalmonNote["convertedTime"] = allSalmonNote["Time"].apply(lambda x: datetime.strptime(x, "%H:%M:%S"))
     allSalmonNote["convertedDate"] = allSalmonNote["Date"].apply(date_convert_helper)
     allSalmonNote["combinedDate"] = pd.to_datetime(allSalmonNote["convertedDate"].astype(str) + " " + allSalmonNote["convertedTime"].astype(str), format="mixed")
@@ -81,6 +82,7 @@ def read_salmon_note():
     allSalmonNote["fileNameDatePrefix"] = allSalmonNote["convertedDate"].apply(lambda x: x.strftime("%Y-%m-%d"))
     allSalmonNote["folderName"] = allSalmonNote["convertedDate"].apply(lambda x: x.strftime("ARIS_%Y_%m_%d"))
     allSalmonNote.to_csv("allSalmonNote.csv", index=False)
+    
     return allSalmonNote
 
 def process_salmon_note(start, end, allSalmonNote, fps):
@@ -111,8 +113,9 @@ def process_salmon_note(start, end, allSalmonNote, fps):
         currentRow += 1
 
         if os.path.isfile(arisFilePath):
-            create_folder(videoPathFolder)
-            covertARISToVideo(arisFilePath, videoPath,startFrame=startFrame, endFrame=endFrame, fps=fps)
+            if startFrame < 0 or endFrame < 0:
+                create_folder(videoPathFolder)
+                covertARISToVideo(arisFilePath, videoPath,startFrame=-1, endFrame=-1, fps=fps)
         else:
             # print("File %s does not exist" %(arisFilePath))
             pass
@@ -157,7 +160,7 @@ def processAllARISFiles():
     
     print("\n\nAll done!", flush=True)
 
-# ! LF Haida SOnar Data 2020 - LF not processed
+# ! LF Haida Sonar Data 2020 - LF not processed
 if __name__ == "__main__":
     pList = []
     fps = 5
