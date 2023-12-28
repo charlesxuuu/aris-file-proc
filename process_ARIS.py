@@ -23,6 +23,8 @@ arisFolderPath = "./sonar/"
 salmonNoteFolderPath = "./sonar/notes/"
 _outputVideoPath = "G:\\My Drive\\Salmon Videos\\Video Training Data\\Sonar videos\\Haida_2020\\"
 
+salmonNoteFolderPath = "./sonar/notes2/"
+outputVideoPath = "./output/"
 numFramesBefore = 10
 numFramesAfter = 50
 numFramesToBeConsideredTogether = 20
