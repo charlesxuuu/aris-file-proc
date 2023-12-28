@@ -45,3 +45,5 @@ output/
 sonar/
 example_annotation/
 .venv/
+
+.idea/
