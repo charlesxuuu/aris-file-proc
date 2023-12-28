@@ -613,3 +613,5 @@ Haida_2020/
 example_annotation/
 >>>>>>> 9f27881 (created  annotation_converter.py)
 .venv/
+
+.idea/
