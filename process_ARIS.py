@@ -17,15 +17,18 @@ from dateutil import parser
 import matplotlib.pyplot as plt
 from multiprocessing import Process
 
-_arisFolderPath = "G:\\My Drive\\Salmon Videos\\Training dataset\\Sonar ARIS Files\\"
+
 arisFolderPath = "./sonar/"
+arisFolderPath = "G:\\My Drive\\Salmon Videos\\Training dataset\\Sonar ARIS Files\\"
 
 salmonNoteFolderPath = "./sonar/notes/"
-_outputVideoPath = "G:\\My Drive\\Salmon Videos\\Video Training Data\\Sonar videos\\Haida_2020\\"
+
 
 salmonNoteFolderPath = "./sonar/notes2/"
 outputVideoPath = "./output/"
-numFramesBefore = 10
+outputVideoPath = "G:\\My Drive\\Salmon Videos\\Video Training Data\\Sonar videos\\Haida_2020\\"
+
+numFramesBefore = 20
 numFramesAfter = 50
 numFramesToBeConsideredTogether = 20
 
