@@ -119,9 +119,11 @@ def process_salmon_note(start, end, allSalmonNote, fps):
         currentRow += 1
 
         if os.path.isfile(arisFilePath):
-            if startFrame < 0 or endFrame < 0:
+            if startFrame <= -1000:
                 create_folder(videoPathFolder)
                 covertARISToVideo(arisFilePath, videoPath,startFrame=-1, endFrame=-1, fps=fps)
+            else:
+                covertARISToVideo(arisFilePath, videoPath,startFrame=startFrame, endFrame=endFrame, fps=fps)
         else:
             # print("File %s does not exist" %(arisFilePath))
             pass
