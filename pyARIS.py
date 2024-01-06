@@ -1116,7 +1116,7 @@ def VideoExportOriginal_NoProgressBar(data, filename, fps = 24.0, start_frame = 
                 '-i', '-',  # The input comes from a pipe
                 '-an',  # Tells FFMPEG not to expect any audio
                 '-c:v', 'libx264',
-                '-crf', '0',
+                # '-crf', '0',
                 "-vf",
                 "pad=width=ceil(iw/2)*2:height=ceil(ih/2)*2", # make sure width and height are divisible by 2
                 filename]
