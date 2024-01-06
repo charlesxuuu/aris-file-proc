@@ -119,8 +119,9 @@ def process_salmon_note(start, end, allSalmonNote, fps):
         currentRow += 1
 
         if os.path.isfile(arisFilePath):
+            create_folder(videoPathFolder)
+            
             if startFrame <= -1000:
-                create_folder(videoPathFolder)
                 covertARISToVideo(arisFilePath, videoPath,startFrame=-1, endFrame=-1, fps=fps)
             else:
                 covertARISToVideo(arisFilePath, videoPath,startFrame=startFrame, endFrame=endFrame, fps=fps)
