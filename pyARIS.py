@@ -1101,7 +1101,7 @@ def VideoExportOriginal_NoProgressBar(data, filename, fps = 24.0, start_frame = 
     
     """
     
-    if osPlatform == 'Linux':
+    if osPlatform == 'Linux' or osPlatform == 'Darwin': # Dawrin is Mac OS
         command = ['ffmpeg',
                 '-y',  # (optional) overwrite output file if it exists
                 '-f', 'image2pipe',
@@ -1113,6 +1113,8 @@ def VideoExportOriginal_NoProgressBar(data, filename, fps = 24.0, start_frame = 
                 '-an',  # Tells FFMPEG not to expect any audio
                 '-c:v', 'libx264',
                 '-crf', '0',
+                "-vf",
+                "pad=width=ceil(iw/2)*2:height=ceil(ih/2)*2",
                 filename]
     elif osPlatform == 'Windows':
         command = ['ffmpeg.exe',
