@@ -615,3 +615,4 @@ example_annotation/
 .venv/
 
 .idea/
+*.DS_Store
