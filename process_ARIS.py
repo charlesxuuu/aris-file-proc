@@ -28,7 +28,7 @@ from multiprocessing import Process
 
 numFramesBefore = 20
 numFramesAfter = 50
-numFramesToBeConsideredTogether = 20
+numSecondsToBeConsideredTogether = 20
 
 # * Deprecated
 outputDir = "./output/processed_sonar/"
