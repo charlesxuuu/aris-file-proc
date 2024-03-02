@@ -4,9 +4,8 @@ import time
 
 # Video Capture
 capture = cv2.VideoCapture("D:/sonar/2020-05-27_071000.mp4")
+#capture = cv2.VideoCapture("./output/Haida_2020-05-24/2020-05-24_000000_-8-62.mp4")
 #capture = cv2.VideoCapture("D:/sonar/2020-05-25_020000.mp4")
-#capture = cv2.VideoCapture("D:/sonar/caltech_2018-05-27_180004_1295_1895.mp4")
-
 #capture = cv2.VideoCapture("D:/sonar/2020-05-24_000000.mp4")
 """
 
@@ -20,7 +19,6 @@ dist2Threshold is a threshold to define whether a pixel is different from the ba
 The smaller the value is, the more sensitive movement detection is. And vice versa.
 
 detectShadows : If set to true, shadows will be displayed in gray on the generated mask. (Example bellow)
-
 
 count: https://stackoverflow.com/questions/52087533/how-to-find-number-of-clusters-in-a-image
 """
@@ -45,32 +43,27 @@ textColor = (255, 255, 255)
 while (1):
     # Return Value and the current frame
     ret, frame = capture.read()
-
     #  Check if a current frame actually exist
     if not ret:
         break
-
     frameCount += 1
-    print("frameCount: " + str(frameCount))
+    print("FrameCount: " + str(frameCount))
 
     # Resize the frame
     resizedFrame = cv2.resize(frame, (0, 0), fx=0.64, fy=0.64)
-
-
 
     # Get the foreground masks using all of the subtractors
     mogMask = mogSubtractor.apply(resizedFrame)
     knnMask = knnSubtractor.apply(resizedFrame)
 
-    countKnnMask = mogMask.copy()
+    countMOGMask = mogMask.copy()
+    morphMOGMask = cv2.morphologyEx(countMOGMask, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2, 2)))
 
-    morphKnnMask = cv2.morphologyEx(countKnnMask, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2, 2)))
-
-    ret, thresh = cv2.threshold(morphKnnMask, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    ret, thresh = cv2.threshold(morphMOGMask, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
     n_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(thresh)
     print("n_labels: " + str(n_labels))
 
-    morphKnnMask = cv2.cvtColor(morphKnnMask, cv2.COLOR_GRAY2RGB)
+    morphMOGMask = cv2.cvtColor(morphMOGMask, cv2.COLOR_GRAY2RGB)
     size_thresh = 30
     for i in range(1, n_labels):
         if stats[i, cv2.CC_STAT_AREA] >= size_thresh:
@@ -80,7 +73,7 @@ while (1):
             w = stats[i, cv2.CC_STAT_WIDTH]
             h = stats[i, cv2.CC_STAT_HEIGHT]
             print("loc: " + str(x) + " " +str(y) + " " + str(w) + " " + str(h))
-            cv2.rectangle(morphKnnMask, (x, y), (x + w, y + h), (0, 255, 0), thickness=1)
+            cv2.rectangle(morphMOGMask, (x, y), (x + w, y + h), (0, 255, 0), thickness=1)
 
 
     mog2Mmask = mog2Subtractor.apply(resizedFrame)
@@ -137,8 +130,8 @@ while (1):
     cv2.imshow('KNN', knnMask)
     cv2.imshow('CNT', cntMask)
 
-    cv2.imshow('countKnnMask', countKnnMask)
-    cv2.imshow('morphKnnMask', morphKnnMask)
+    cv2.imshow('countMOGMask', countMOGMask)
+    cv2.imshow('morphMOGMask', morphMOGMask)
 
     cv2.moveWindow('Original', 0, 0)
     cv2.moveWindow('MOG', 400, 0)
@@ -147,8 +140,8 @@ while (1):
     cv2.moveWindow('MOG2', 1600, 0)
     cv2.moveWindow('CNT', 2000, 0)
 
-    cv2.moveWindow('countKnnMask', 400, 700)
-    cv2.moveWindow('morphKnnMask', 800, 700)
+    cv2.moveWindow('countMOGMask', 400, 700)
+    cv2.moveWindow('morphMOGMask', 800, 700)
 
     k = cv2.waitKey(0) & 0xff
     print(k)
