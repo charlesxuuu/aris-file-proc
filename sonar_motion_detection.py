@@ -76,7 +76,7 @@ while True:
             cv2.rectangle(morphMOGMask, (x, y), (x + w, y + h), (0, 255, 0), thickness=1)
 
 
-    mog2Mmask = mog2Subtractor.apply(resizedFrame)
+    mog2mask = mog2Subtractor.apply(resizedFrame)
     gmgMask = gmgSubtractor.apply(resizedFrame)
     gmgMask = cv2.morphologyEx(gmgMask, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2, 2)))
 
@@ -85,13 +85,13 @@ while True:
 
     # Count all the non zero pixels within the masks
     mogCount = np.count_nonzero(mogMask)
-    mog2MCount = np.count_nonzero(mog2Mmask)
+    mog2Count = np.count_nonzero(mog2mask)
     gmgCount = np.count_nonzero(gmgMask)
     knnCount = np.count_nonzero(knnMask)
     cntCount = np.count_nonzero(cntMask)
 
     print('mog Frame: %d, Pixel Count: %d' % (frameCount, mogCount))
-    print('mog2 Frame: %d, Pixel Count: %d' % (frameCount, mog2MCount))
+    print('mog2 Frame: %d, Pixel Count: %d' % (frameCount, mog2Count))
     print('gmg Frame: %d, Pixel Count: %d' % (frameCount, gmgCount))
     print('knn Frame: %d, Pixel Count: %d' % (frameCount, knnCount))
     print('cnt Frame: %d, Pixel Count: %d' % (frameCount, cntCount))
@@ -99,7 +99,7 @@ while True:
     titleTextPosition = (100, 40)
     titleTextSize = 1.2
     cv2.putText(mogMask, 'MOG', titleTextPosition, cv2.FONT_HERSHEY_SIMPLEX, titleTextSize, textColor, 2, cv2.LINE_AA)
-    cv2.putText(mog2Mmask, 'MOG2', titleTextPosition, cv2.FONT_HERSHEY_SIMPLEX, titleTextSize, textColor, 2, cv2.LINE_AA)
+    cv2.putText(mog2mask, 'MOG2', titleTextPosition, cv2.FONT_HERSHEY_SIMPLEX, titleTextSize, textColor, 2, cv2.LINE_AA)
     cv2.putText(gmgMask, 'GMG', titleTextPosition, cv2.FONT_HERSHEY_SIMPLEX, titleTextSize, textColor, 2, cv2.LINE_AA)
     cv2.putText(knnMask, 'KNN', titleTextPosition, cv2.FONT_HERSHEY_SIMPLEX, titleTextSize, textColor, 2, cv2.LINE_AA)
     cv2.putText(cntMask, 'CNT', titleTextPosition, cv2.FONT_HERSHEY_SIMPLEX, titleTextSize, textColor, 2, cv2.LINE_AA)
@@ -124,7 +124,7 @@ while True:
 
     cv2.imshow('Original', resizedFrame)
     cv2.imshow('MOG', mogMask)
-    cv2.imshow('MOG2', mog2Mmask)
+    cv2.imshow('MOG2', mog2mask)
     cv2.imshow('GMG', gmgMask)
     cv2.imshow('KNN', knnMask)
     cv2.imshow('CNT', cntMask)
