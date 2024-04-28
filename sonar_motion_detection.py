@@ -6,7 +6,10 @@ import time
 capture = cv2.VideoCapture("D:/sonar/2020-05-27_071000.mp4")
 #capture = cv2.VideoCapture("./output/Haida_2020-05-24/2020-05-24_000000_-8-62.mp4")
 #capture = cv2.VideoCapture("D:/sonar/2020-05-25_020000.mp4")
-#capture = cv2.VideoCapture("D:/sonar/2020-05-24_000000.mp4")
+capture = cv2.VideoCapture("./Haida_2020/2020-05-24_000000_-58-82.mp4")
+capture = cv2.VideoCapture("./Haida_2020/2020-05-24_005000_2230-2370.mp4")
+capture = cv2.VideoCapture("./Haida_2020/2020-05-24_081000_1102-1242.mp4")
+capture = cv2.VideoCapture("./Haida_2020/denoised_2020-05-24_230000_323-463.mp4")
 """
 
 MOG algorithm brief introduction (in chinese) https://blog.csdn.net/weixin_53598445/article/details/124093067
@@ -54,16 +57,19 @@ while True:
 
     # Get the foreground masks using all the subtractors
     mogMask = mogSubtractor.apply(resizedFrame)
+    mog2Mask = mog2Subtractor.apply(resizedFrame)
     knnMask = knnSubtractor.apply(resizedFrame)
 
-    countMOGMask = mogMask.copy()
-    morphMOGMask = cv2.morphologyEx(countMOGMask, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2, 2)))
+    countMOG2Mask = mog2Mask.copy()
+    morphMOGMaskOpen = cv2.morphologyEx(countMOG2Mask, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2, 2)))
+    morphMOGMaskClose = cv2.morphologyEx(morphMOGMaskOpen, cv2.MORPH_CLOSE,
+                                         cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2, 2)))
 
-    ret, thresh = cv2.threshold(morphMOGMask, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    ret, thresh = cv2.threshold(morphMOGMaskOpen, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
     n_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(thresh)
     print("n_labels: " + str(n_labels))
 
-    morphMOGMask = cv2.cvtColor(morphMOGMask, cv2.COLOR_GRAY2RGB)
+    morphMOGMaskOpen = cv2.cvtColor(morphMOGMaskOpen, cv2.COLOR_GRAY2RGB)
     size_thresh = 30
     for i in range(1, n_labels):
         if stats[i, cv2.CC_STAT_AREA] >= size_thresh:
@@ -73,7 +79,7 @@ while True:
             w = stats[i, cv2.CC_STAT_WIDTH]
             h = stats[i, cv2.CC_STAT_HEIGHT]
             print("loc: " + str(x) + " " +str(y) + " " + str(w) + " " + str(h))
-            cv2.rectangle(morphMOGMask, (x, y), (x + w, y + h), (0, 255, 0), thickness=1)
+            cv2.rectangle(morphMOGMaskOpen, (x, y), (x + w, y + h), (0, 255, 0), thickness=1)
 
 
     mog2mask = mog2Subtractor.apply(resizedFrame)
@@ -90,11 +96,11 @@ while True:
     knnCount = np.count_nonzero(knnMask)
     cntCount = np.count_nonzero(cntMask)
 
-    print('mog Frame: %d, Pixel Count: %d' % (frameCount, mogCount))
-    print('mog2 Frame: %d, Pixel Count: %d' % (frameCount, mog2Count))
-    print('gmg Frame: %d, Pixel Count: %d' % (frameCount, gmgCount))
-    print('knn Frame: %d, Pixel Count: %d' % (frameCount, knnCount))
-    print('cnt Frame: %d, Pixel Count: %d' % (frameCount, cntCount))
+    #print('mog Frame: %d, Pixel Count: %d' % (frameCount, mogCount))
+    #print('mog2 Frame: %d, Pixel Count: %d' % (frameCount, mog2Count))
+    #print('gmg Frame: %d, Pixel Count: %d' % (frameCount, gmgCount))
+    #print('knn Frame: %d, Pixel Count: %d' % (frameCount, knnCount))
+    #print('cnt Frame: %d, Pixel Count: %d' % (frameCount, cntCount))
 
     titleTextPosition = (100, 40)
     titleTextSize = 1.2
@@ -129,8 +135,10 @@ while True:
     cv2.imshow('KNN', knnMask)
     cv2.imshow('CNT', cntMask)
 
-    cv2.imshow('countMOGMask', countMOGMask)
-    cv2.imshow('morphMOGMask', morphMOGMask)
+    cv2.imshow('countMOGMask', countMOG2Mask)
+    cv2.imshow('morphMOGMaskOpen', morphMOGMaskOpen)
+    cv2.imshow('morphMOGMaskClose', morphMOGMaskClose)
+    cntCount = np.count_nonzero(cntMask)
 
     cv2.moveWindow('Original', 0, 0)
     cv2.moveWindow('MOG', 400, 0)
@@ -140,7 +148,8 @@ while True:
     cv2.moveWindow('CNT', 2000, 0)
 
     cv2.moveWindow('countMOGMask', 400, 700)
-    cv2.moveWindow('morphMOGMask', 800, 700)
+    cv2.moveWindow('morphMOGMaskOpen', 800, 700)
+    cv2.moveWindow('morphMOGMaskClose', 1200, 700)
 
     k = cv2.waitKey(0) & 0xff
     # Enter for next frame and Esc for break the loop
@@ -149,7 +158,7 @@ while True:
     if k == 27:
         break
 
-time.sleep(5)
+time.sleep(3)
 
 capture.release()
 cv2.destroyAllWindows()
