@@ -1,8 +1,8 @@
-FROM python:3.7-slim
+FROM python:3.9-slim
 
 WORKDIR /user/src/app
 
 COPY . .
-RUN pip install --no-cache-dir -r requirements.txt
+# RUN pip install --no-cache-dir -r requirements.txt
 
-VOLUME [ "/data" ]
+# RUN python3 sonar_compose.py

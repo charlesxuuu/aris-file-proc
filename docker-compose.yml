@@ -1,8 +1,25 @@
-version: '3.8'
 services:
   app:
+    container_name: sonar_app
+    volumes:
+      - sonar_data:/home/sonar_data
+      # - converted_data:/home/converted
     build:
       context: .
       dockerfile: Dockerfile
-    volumes:
-      - ~/test_folder:/data
+    command: python3 sonar_compose.py
+  
+volumes:
+  sonar_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/sonar_data
+      o: bind
+    
+  # converted_data:
+  #   driver: local
+  #   driver_opts:
+  #     type: none
+  #     device: /home/converted
+  #     o: bind
