@@ -18,13 +18,15 @@ import matplotlib.pyplot as plt
 from multiprocessing import Process
 
 
-# arisFolderPath = "./sonar/"
-# arisFolderPath = "G:\\My Drive\\Salmon Videos\\Training dataset\\Sonar ARIS Files\\"
+arisFolderPath = "./sonar/"
+arisFolderPath = "G:\\My Drive\\Salmon Videos\\Training dataset\\Sonar ARIS Files\\"
 
-# salmonNoteFolderPath = "./sonar/notes/"
+salmonNoteFolderPath = "./sonar/notes/"
 
-# outputVideoPath = "./output/"
-# outputVideoPath = "G:\\My Drive\\Salmon Videos\\Video Training Data\\Sonar videos\\Haida_2020\\"
+
+salmonNoteFolderPath = "./sonar/notes2/"
+outputVideoPath = "./output/"
+outputVideoPath = "G:\\My Drive\\Salmon Videos\\Video Training Data\\Sonar videos\\Haida_2020\\"
 
 numFramesBefore = 20
 numFramesAfter = 50
@@ -169,7 +171,7 @@ def processAllARISFiles():
     
     print("\n\nAll done!", flush=True)
 
-# ! LF Haida Sonar Data 2020 - LF not processed
+# ! LF Haida SOnar Data 2020 - LF not processed
 if __name__ == "__main__":
     pList = []
     fps = 5

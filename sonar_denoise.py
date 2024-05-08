@@ -22,7 +22,7 @@ def load_frames(video_path):
     cap.release()
     return frames
 
-def denoise_frames(frames, h=10, templateWindowSize=7, searchWindowSize=21):
+def denoise_frames(frames, h=8, templateWindowSize=7, searchWindowSize=21):
     """ Apply Non-local Means Denoising algorithm to video frames, with debug information. """
     if not frames:
         print("Error: No frames to denoise.")
@@ -56,7 +56,8 @@ def save_and_display_denoised_frames(frames, video_path):
     cv2.destroyAllWindows()
 
 # Load video frames
-video_path = './Haida_2020/2020-05-24_230000_323-463.mp4'
+video_path = './output/Haida_2020-05-24/2020-05-24_230000_373-443.mp4'
+
 frames = load_frames(video_path)  # Adjust number based on your video length and memory capabilities
 
 # Denoise the frames
