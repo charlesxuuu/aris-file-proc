@@ -10,6 +10,7 @@ capture = cv2.VideoCapture("./Haida_2020/2020-05-24_000000_-58-82.mp4")
 capture = cv2.VideoCapture("./Haida_2020/2020-05-24_005000_2230-2370.mp4")
 capture = cv2.VideoCapture("./Haida_2020/2020-05-24_081000_1102-1242.mp4")
 capture = cv2.VideoCapture("./Haida_2020/denoised_2020-05-24_230000_323-463.mp4")
+capture = cv2.VideoCapture("./output/Haida_2020-05-24/denoised_MNLM_2020-05-24_230000_2027-2097.mp4")
 """
 
 MOG algorithm brief introduction (in chinese) https://blog.csdn.net/weixin_53598445/article/details/124093067

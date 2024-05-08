@@ -3,7 +3,7 @@ import numpy as np
 import os
 
 def load_frames(video_path):
-    """ Load all frames from the video. """
+    """ Load all frames from the video as greyscale. """
     cap = cv2.VideoCapture(video_path)
     if not cap.isOpened():
         print("Error: Cannot open video.")
@@ -13,6 +13,7 @@ def load_frames(video_path):
     while True:
         ret, frame = cap.read()
         if ret:
+            # Assuming frame is already greyscale, append directly
             frames.append(frame)
             frame_count += 1  # Increment the counter on successful read
             print(f"Loaded {frame_count} frames...")
@@ -22,16 +23,16 @@ def load_frames(video_path):
     cap.release()
     return frames
 
-def denoise_frames(frames, h=8, templateWindowSize=7, searchWindowSize=21):
-    """ Apply Non-local Means Denoising algorithm to video frames, with debug information. """
+def denoise_frames(frames, d=3, sigmaColor=75, sigmaSpace=75):
+    """ Apply bilateral filter to greyscale video frames, with debug information. """
     if not frames:
         print("Error: No frames to denoise.")
         return []
     print("Starting denoising process...")
     denoised_frames = []
-    for i in range(2, len(frames) - 2):
-        print(f"Denoising frame {i} of {len(frames)}")
-        denoised_frame = cv2.fastNlMeansDenoisingMulti(frames, i, 5, None, h, templateWindowSize, searchWindowSize)
+    for i, frame in enumerate(frames):
+        print(f"Denoising frame {i+1} of {len(frames)}")
+        denoised_frame = cv2.bilateralFilter(frame, d, sigmaColor, sigmaSpace)
         denoised_frames.append(denoised_frame)
     print("Denoising completed.")
     return denoised_frames
@@ -44,8 +45,8 @@ def save_and_display_denoised_frames(frames, video_path):
     new_path = os.path.join(dir_name, new_base_name)
 
     # Create a VideoWriter object to save denoised frames
-    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    out = cv2.VideoWriter(new_path, fourcc, 20.0, (frames[0].shape[1], frames[0].shape[0]))
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # Modify codec if necessary
+    out = cv2.VideoWriter(new_path, fourcc, 20.0, (frames[0].shape[1], frames[0].shape[0]), False)  # Last parameter is isColor=False
 
     for frame in frames:
         out.write(frame)  # Write frame to file
@@ -70,3 +71,5 @@ if frames:
         print("No frames were denoised.")
 else:
     print("Failed to load frames.")
+
+
