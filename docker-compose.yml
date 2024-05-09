@@ -1,6 +1,15 @@
 services:
   app:
     container_name: sonar_app
+    # privileged: true
+    ports:
+      - "22:22"
+    cap_add:
+      - SYS_ADMIN
+    devices:
+      - "/dev/fuse:/dev/fuse"
+    security_opt:
+      - apparmor:unconfined
     volumes:
       - sonar_data:/home/sonar_data
       # - converted_data:/home/converted
@@ -8,7 +17,7 @@ services:
       context: .
       dockerfile: Dockerfile
     command: python3 sonar_compose.py
-  
+
 volumes:
   sonar_data:
     driver: local
