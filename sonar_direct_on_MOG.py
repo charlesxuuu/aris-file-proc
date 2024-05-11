@@ -50,7 +50,7 @@ while True:
     print("FrameCount: " + str(frameCount))
 
     # Resize the frame
-    resizedFrame = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
+    resizedFrame = cv2.resize(frame, (0, 0), fx=0.6, fy=0.6)
 
     # Get the foreground masks using all the subtractors
     mogMask = mogSubtractor.apply(resizedFrame)
