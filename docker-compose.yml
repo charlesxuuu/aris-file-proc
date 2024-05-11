@@ -3,15 +3,17 @@ services:
     container_name: sonar_app
     # privileged: true
     ports:
-      - "22:22"
+      - "12345:445"
     cap_add:
       - SYS_ADMIN
+      - DAC_READ_SEARCH
     devices:
       - "/dev/fuse:/dev/fuse"
     security_opt:
       - apparmor:unconfined
     volumes:
-      - sonar_data:/home/sonar_data
+      - sonar_rgb:/home/sonar_rgb
+      - logs:/home/logs
       # - converted_data:/home/converted
     build:
       context: .
@@ -19,11 +21,17 @@ services:
     command: python3 sonar_compose.py
 
 volumes:
-  sonar_data:
+  sonar_rgb:
     driver: local
     driver_opts:
       type: none
-      device: /home/sonar_data
+      device: /home/sonar/sonar_rgb
+      o: bind
+  logs:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/sonar/logs
       o: bind
     
   # converted_data:

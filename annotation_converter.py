@@ -8,7 +8,7 @@ import threading
 import subprocess
 import numpy as np
 import datumaro as dm
-from my_utils import *
+from util.my_utils import *
 from PIL import Image
 from tqdm import tqdm
 from dateutil import parser

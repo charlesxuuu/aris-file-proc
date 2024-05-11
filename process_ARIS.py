@@ -9,7 +9,7 @@ import subprocess
 import multiprocessing
 import numpy as np
 import pandas as pd
-from my_utils import *
+from util.my_utils import *
 from PIL import Image
 from tqdm import tqdm
 from datetime import datetime

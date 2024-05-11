@@ -5,7 +5,7 @@ import pyARIS
 import threading
 import subprocess
 import numpy as np
-from my_utils import *
+from util.my_utils import *
 from PIL import Image
 from tqdm import tqdm
 import matplotlib.pyplot as plt
