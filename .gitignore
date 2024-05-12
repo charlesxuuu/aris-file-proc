@@ -4,4 +4,4 @@ __pycache__/
 output/Haida_2020-05-24.zip
 sonar/
 
-output_denoised.mp4
+*.mp4
