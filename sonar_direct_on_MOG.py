@@ -100,6 +100,7 @@ while True:
 
     cv2.imshow('Original', resizedFrame)
     cv2.imshow('MOG', mogMask)
+    cv2.imshow('MOG2', mog2Mmask)
 
     cv2.imshow('countMOGMask', countMOGMask)
     cv2.imshow('morphMOGMask', morphMOGMask)
