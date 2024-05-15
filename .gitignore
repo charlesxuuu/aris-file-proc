@@ -5,6 +5,5 @@ output/Haida_2020-05-24.zip
 sonar/
 
 output_denoised.mp4
-cifs-credentials
-test_key
-test_key.pub
+
+settings/
