@@ -8,14 +8,17 @@ from datetime import datetime
 from util.my_utils import *
 
 SONAR_ARIS_FOLDER_PATH = '/home/aris/'
-SONAR_GRB_FOLDER_PATH = '/home/sonar_rgb/'
+SONAR_RGB_FOLDER_PATH = '/home/sonar_rgb/'
 SONAR_LOG_PATH = '/home/logs/'
 settings = {}
 mount_drive_command = ""
+logger_current_date = ""
 # subprocess.call(["sshfs", "netlabmedia@ip:/media/netlabmedia/LaCie/", "/user/src/pi_drive", "-o", "IdentityFile=/user/src/app/test_key", "-o", "StrictHostKeyChecking=no"])
 
 def initialize_logger():
+    global logger_current_date
     current_date = time.strftime("%Y-%m-%d")
+    logger_current_date = current_date
     logging.basicConfig(filename=os.path.join(SONAR_LOG_PATH, f'{current_date}.log'), 
                         format='%(asctime)s - %(message)s',
                         level=logging.INFO)
@@ -63,8 +66,12 @@ def get_first_file(directory_path):
 
     earliest_file = min(files_with_dates, key=lambda x: x[1])[0]
 
-    print(earliest_outer_folder, earliest_inner_folder, earliest_file)
+    return earliest_outer_folder, earliest_inner_folder, earliest_file
     # return earliest_folder
+
+def record_current_processing_file(earliest_outer_folder, earliest_inner_folder, earliest_file):
+    with open(f"{SONAR_ARIS_FOLDER_PATH}/processing_file.json", "w") as f:
+        json.dump({'earliest_outer_folder': earliest_outer_folder, 'earliest_inner_folder': earliest_inner_folder, 'earliest_file': earliest_file}, f)
 
 def initialize_settings():
     global settings
@@ -80,19 +87,45 @@ def initialize_drive():
     try:
         logging.info("Mounting drive")
         logging.info(mount_drive_command)
-        result = subprocess.run(mount_drive_command, shell=True, text=True, 
+        subprocess.run(mount_drive_command, shell=True, text=True, 
                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
         logging.info("Command executed successfully")
     except subprocess.CalledProcessError as e:
-        logging.info("Error output:", e.stderr, result.stdout)
+        logging.info(f"Error executing command: {e.stderr}")
+        if (e.stderr.find("Device or resource busy") != -1):
+            logging.info("Drive already mounted")
+            return True
+        return False
+    
+    return True
+
+need_init = True
 
 if __name__ == '__main__':
-    print(get_first_file("/mnt/d"))
-    # initialize_settings()
-    # initialize_logger()
-    # initialize_drive()
-    # logging.info("Sonar app started")
+    while True:
+        if need_init:
+            initialize_settings()
+            initialize_logger()
+            initialize_drive()
+            logging.info("Sonar app started")
+            need_init = False
+        
+        if time.strftime("%Y-%m-%d") != logger_current_date:
+            initialize_logger()
+        
+        if not os.listdir(SONAR_ARIS_FOLDER_PATH):
+            logging.info("Folder is empty")
+            time.sleep(900)
+            continue
 
-    # while True:
-    #     time.sleep(5)
+        if not os.path.exists(f"{SONAR_ARIS_FOLDER_PATH}/processing_file.json"):
+            outer_folder, inner_folder, file = get_first_file("/mnt/d")
+        else:
+            with open(f"{SONAR_ARIS_FOLDER_PATH}/processing_file.json", "r") as f:
+                data = json.load(f)
+                outer_folder = data['earliest_outer_folder']
+                inner_folder = data['earliest_inner_folder']
+                file = data['earliest_file']
+            
+        # start converting to RGB
 
