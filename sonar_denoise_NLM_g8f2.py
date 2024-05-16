@@ -56,7 +56,8 @@ def save_and_display_denoised_frames(frames, video_path):
     cv2.destroyAllWindows()
 
 # Load video frames
-video_path = './output/Haida_2020-05-24/2020-05-24_225000_2651-2721.mp4'
+#video_path = './output/Haida_2020-05-24/2020-05-24_225000_2651-2721.mp4'
+video_path = './output/caltech1.mp4'
 
 frames = load_frames(video_path)  # Adjust number based on your video length and memory capabilities
 
