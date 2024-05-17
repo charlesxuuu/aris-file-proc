@@ -90,6 +90,7 @@ def initialize_drive():
         subprocess.run(mount_drive_command, shell=True, text=True, 
                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
         logging.info("Command executed successfully")
+        create_folder(os.path.join(SONAR_ARIS_FOLDER_PATH, 'motion_detected'))
     except subprocess.CalledProcessError as e:
         logging.info(f"Error executing command: {e.stderr}")
         if (e.stderr.find("Device or resource busy") != -1):
@@ -98,6 +99,12 @@ def initialize_drive():
         return False
     
     return True
+
+def process_file(out_folder, in_folder, file):
+    pass
+
+def get_next_file():
+    pass
 
 need_init = True
 
@@ -108,24 +115,33 @@ if __name__ == '__main__':
             initialize_logger()
             initialize_drive()
             logging.info("Sonar app started")
-            need_init = False
         
         if time.strftime("%Y-%m-%d") != logger_current_date:
             initialize_logger()
         
-        if not os.listdir(SONAR_ARIS_FOLDER_PATH):
+        if "ARIS" not in os.listdir(SONAR_ARIS_FOLDER_PATH):
             logging.info("Folder is empty")
             time.sleep(900)
             continue
 
         if not os.path.exists(f"{SONAR_ARIS_FOLDER_PATH}/processing_file.json"):
-            outer_folder, inner_folder, file = get_first_file("/mnt/d")
+            try:
+                outer_folder, inner_folder, file = get_first_file("/mnt/d")
+                record_current_processing_file(outer_folder, inner_folder, file)
+            except Exception as e:
+                logging.info(f"Error getting first file: {e}")
+                time.sleep(900)
+                continue
         else:
             with open(f"{SONAR_ARIS_FOLDER_PATH}/processing_file.json", "r") as f:
                 data = json.load(f)
                 outer_folder = data['earliest_outer_folder']
                 inner_folder = data['earliest_inner_folder']
                 file = data['earliest_file']
-            
-        # start converting to RGB
-
+        
+        if need_init:
+            need_init = False
+        else:
+            next_outer_folder, next_inner_folder, next_file = get_next_file()
+        
+        process_file(next_outer_folder, next_inner_folder, next_file)
