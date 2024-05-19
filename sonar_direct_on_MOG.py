@@ -6,7 +6,7 @@ import math
 # Video Capture
 capture = cv2.VideoCapture("./output/Haida_2020-05-24/2020-05-24_015000_503-573.mp4")
 #capture = cv2.VideoCapture("./output/Haida_2020-05-24/2020-05-24_230000_373-443.mp4")
-capture = cv2.VideoCapture("./output/Haida_2020-05-24/haida23.mp4")
+capture = cv2.VideoCapture("./output/Haida_2020-05-24/wuikinuxv23.mp4")
 
 #capture = cv2.VideoCapture("./output/Haida_2020-05-24/2020-05-24_000000_-8-62.mp4")
 #capture = cv2.VideoCapture("D:/sonar/2020-05-25_020000.mp4")

@@ -3,5 +3,8 @@ __pycache__/
 
 output/Haida_2020-05-24.zip
 sonar/
+sonar_mp4/
 
 *.mp4
+
+settings/
