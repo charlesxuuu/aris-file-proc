@@ -161,8 +161,8 @@ while True:
     cv2.moveWindow('edge_original', 1400, 600)
     cv2.moveWindow('edge_mog', 1850, 600)
 
-    print("frame_count: " + str(frameCount))
-    time.sleep(1)
+    #print("frame_count: " + str(frameCount))
+    #time.sleep(1)
 
     # k = cv2.waitKey(0) & 0xff
 
