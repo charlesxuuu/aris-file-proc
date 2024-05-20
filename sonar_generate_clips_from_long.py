@@ -3,7 +3,6 @@ import numpy as np
 import time
 from cv2.ximgproc import guidedFilter
 
-
 def change_surrounding_region(mask, size):
     """
     expand white pixels 2 px
@@ -22,7 +21,7 @@ def change_surrounding_region(mask, size):
     return result_mask
 
 
-capture = cv2.VideoCapture("1.mp4")
+capture = cv2.VideoCapture("sonar_mp4/ARIS_2020_05_24/2020-05-24_000000.mp4")
 # capture = cv2.VideoCapture("2.mp4")
 # capture = cv2.VideoCapture("caltech.mp4")
 # capture = cv2.VideoCapture("Haida_2020-05-24/2020-05-24_230000_2027-2097.mp4")
@@ -60,7 +59,6 @@ while True:
 
     # here use guided filter
     #
-
     guided_img = guidedFilter(copy_of_mog_mask, resized_frame, 10, 0.01)
     guided_mog = guidedFilter(resized_frame, copy_of_mog_mask, 10, 0.01)
 
@@ -162,6 +160,9 @@ while True:
     cv2.moveWindow('guided_mog', 1850, 0)
     cv2.moveWindow('edge_original', 1400, 600)
     cv2.moveWindow('edge_mog', 1850, 600)
+
+    print("frame_count: " + str(frameCount))
+    time.sleep(1)
 
     # k = cv2.waitKey(0) & 0xff
 
