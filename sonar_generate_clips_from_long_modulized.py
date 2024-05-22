@@ -1,6 +1,8 @@
 import os
 import cv2
 import numpy as np
+import pandas as pd
+import csv
 from cv2.ximgproc import guidedFilter
 
 
@@ -70,7 +72,7 @@ def process_frame(frame, mog_subtractor, frame_count):
 def count_fish(stats, guided_img, size_thresh=30):
     fish_count = 0
     fish_count_small = 0
-    fish_count_big = 0
+    fish_count_large = 0
     for i in range(1, stats.shape[0]):
         if stats[i, cv2.CC_STAT_AREA] >= size_thresh:
             x, y, w, h = stats[i, cv2.CC_STAT_LEFT], stats[i, cv2.CC_STAT_TOP], stats[i, cv2.CC_STAT_WIDTH], stats[
@@ -78,10 +80,10 @@ def count_fish(stats, guided_img, size_thresh=30):
             if np.mean(guided_img[y:y + h, x:x + w]) > 80:
                 fish_count += 1
                 if stats[i, cv2.CC_STAT_AREA] >= 50:
-                    fish_count_big += 1
+                    fish_count_large += 1
                 else:
                     fish_count_small += 1
-    return fish_count, fish_count_small, fish_count_big
+    return fish_count, fish_count_small, fish_count_large
 
 
 def display_frames(frames):
@@ -96,9 +98,9 @@ def process_video(input_path, output_path):
     capture = cv2.VideoCapture(input_path)
     mog_subtractor = cv2.bgsegm.createBackgroundSubtractorMOG(100)
     frame_count = 0
-    clips, items_record, items_record_small, items_record_big = [], [], [], []
-    items_record_clips, items_record_clips_small, items_record_clips_big = [], [], []
-    temp, temp_small, temp_big = [], [], []
+    clips, items_record, items_record_small, items_record_large = [], [], [], []
+    items_record_clips, items_record_clips_small, items_record_clips_large = [], [], []
+    temp, temp_small, temp_large = [], [], []
     interval = 0
 
     while True:
@@ -109,15 +111,15 @@ def process_video(input_path, output_path):
 
         resized_frame, mog_mask, guided_img, guided_mog, edge_original, edge_mog, result, n_labels, stats, convert_image = process_frame(
             frame, mog_subtractor, frame_count)
-        fish_count, fish_count_small, fish_count_big = count_fish(stats, guided_img)
+        fish_count, fish_count_small, fish_count_large = count_fish(stats, guided_img)
 
         items_record.append(fish_count)
         items_record_small.append(fish_count_small)
-        items_record_big.append(fish_count_big)
+        items_record_large.append(fish_count_large)
         if temp:
             temp.append(fish_count)
             temp_small.append(fish_count_small)
-            temp_big.append(fish_count_big)
+            temp_large.append(fish_count_large)
 
         if fish_count != 0:
             interval = 0
@@ -125,15 +127,15 @@ def process_video(input_path, output_path):
                 clips.append(max(0, frame_count - 40))
                 temp = items_record[-40:] if frame_count > 40 else items_record
                 temp_small = items_record_small
-                temp_big = items_record_big
+                temp_large = items_record_large
         else:
             interval += 1
         if interval > 80 and len(clips) % 2 == 1:
             clips.append(frame_count - 40)
             items_record_clips.append(temp[:-40])
             temp = []
-            items_record_clips_big.append(temp_big[:-40])
-            temp_big = []
+            items_record_clips_large.append(temp_large[:-40])
+            temp_large = []
             items_record_clips_small.append(temp_small[:-40])
             temp_small = []
 
@@ -143,27 +145,36 @@ def process_video(input_path, output_path):
     if len(clips) % 2 == 1:
         clips.append(frame_count)
     items_record_clips.append(temp)
-    items_record_clips_big.append(temp_big)
+    items_record_clips_large.append(temp_large)
     items_record_clips_small.append(temp_small)
 
     print("起始帧和终止帧")
     print(clips)
     print("二维矩阵: 不同clips的fish count")
+    print("不同clips fish count list长度是")
+    print_2d_list_with_lengths(items_record_clips)
     print(items_record_clips)
     print("一维矩阵: 整个视频的fish count")
+    print("准确值是2761，整个视频fish count list长度是" + str(len(items_record)))
     print(items_record)
     print("二维矩阵: 不同clips的fish count(小)")
     print(items_record_clips_small)
     print("一维矩阵: 整个视频的fish count(小)")
     print(items_record_small)
     print("二维矩阵: 不同clips的fish count(大)")
-    print(items_record_clips_big)
+    print(items_record_clips_large)
     print("一维矩阵: 整个视频的fish count(大)")
-    print(items_record_big)
+    print(items_record_large)
 
     save_clips(capture, clips, output_path)
+    save_long_summary_csv(clips, items_record_clips, items_record_clips_large, items_record_clips_small, output_path)
     capture.release()
     cv2.destroyAllWindows()
+
+
+def print_2d_list_with_lengths(two_d_list):
+    for i, one_d_list in enumerate(two_d_list):
+        print(f"List {i + 1} (length {len(one_d_list)}): {one_d_list}")
 
 
 def save_clips(capture, clips, output_path):
@@ -188,6 +199,57 @@ def save_clips(capture, clips, output_path):
                 break
             start_frame += 1
         out.release()
+
+
+def save_long_summary_csv(clips, items_record_clips, items_record_clips_large,
+                          items_record_clips_small, output_path):
+    long_summary = []
+    for i, clip in enumerate(items_record_clips):
+        start_frame = sum(len(c) for c in items_record_clips[:i])
+        end_frame = start_frame + len(clip) - 1
+        max_count = max(clip) if clip else 0
+        total_sum = sum(clip)
+
+        small_clip = items_record_clips_small[i]
+        large_clip = items_record_clips_large[i]
+        max_small_count = max(small_clip) if small_clip else 0
+        max_large_count = max(large_clip) if large_clip else 0
+
+        long_summary.append([i + 1, start_frame, end_frame, max_count, max_large_count, max_small_count, total_sum])
+
+    # Create a DataFrame for the results
+    df = pd.DataFrame(long_summary, columns=['clip_no', 'start_frame', 'end_frame', 'max_count_a_frame',
+                                             'max_large_count_a_frame', 'max_small_count_a_frame',
+                                             'total_count_a_clip'])
+
+    # Save the results to a CSV file
+    csv_file_path = 'long_summary.csv'
+    csv_joined_file_path = os.path.join(output_path, csv_file_path)
+    df.to_csv(csv_joined_file_path, index=False)
+    pass
+
+
+def generate_aligned_txt_summary(input_csv, output_txt):
+    with open(input_csv, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+
+        # Determine the max length of each column
+        column_widths = {column: max(len(column), max(len(str(row[column])) for row in reader)) for column in
+                         reader.fieldnames}
+
+        csvfile.seek(0)  # Reset the reader to the beginning of the file
+        reader = csv.DictReader(csvfile)  # Re-read the CSV file
+
+        with open(output_txt, 'w') as txtfile:
+            # Write the header
+            headers = [column.ljust(column_widths[column]) for column in reader.fieldnames]
+            txtfile.write(" | ".join(headers) + "\n")
+            txtfile.write("-" * (sum(column_widths.values()) + len(headers) * 3 - 1) + "\n")
+
+            # Write each row
+            for row in reader:
+                line = [str(row[column]).ljust(column_widths[column]) for column in reader.fieldnames]
+                txtfile.write(" | ".join(line) + "\n")
 
 
 if __name__ == "__main__":

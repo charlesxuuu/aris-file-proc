@@ -3,6 +3,11 @@ import numpy as np
 import time
 from cv2.ximgproc import guidedFilter
 
+
+def print_2d_list_with_lengths(two_d_list):
+    for i, one_d_list in enumerate(two_d_list):
+        print(f"List {i + 1} (length {len(one_d_list)}): {one_d_list}")
+
 def change_surrounding_region(mask, size):
     """
     expand white pixels 2 px
@@ -161,6 +166,7 @@ while True:
     cv2.moveWindow('edge_original', 1400, 600)
     cv2.moveWindow('edge_mog', 1850, 600)
 
+    cv2.waitKey(1)
     #print("frame_count: " + str(frameCount))
     #time.sleep(1)
 
@@ -191,6 +197,7 @@ temp_small = []
 print("起始帧和终止帧")
 print(clips)
 print("二维矩阵: 不同clips的fish count")
+print_2d_list_with_lengths(items_record_clips)
 print(items_record_clips)
 print("一维矩阵: 整个视频的fish count")
 print(items_record)
@@ -202,6 +209,8 @@ print("二维矩阵: 不同clips的fish count(大)")
 print(items_record_clips_big)
 print("一维矩阵: 整个视频的fish count(大)")
 print(items_record_big)
+
+
 
 fps = capture.get(cv2.CAP_PROP_FPS)
 
