@@ -208,7 +208,7 @@ def save_long_summary_csv(clips, items_record_clips, items_record_clips_large,
     #    start_frame = sum(len(c) for c in items_record_clips[:i])
     #    end_frame = start_frame + len(clip) - 1
 
-    for i in range(len(clips / 2)):
+    for i in range(len(clips) // 2):
         # TODO: some bugs here
         start_frame = clips[2 * i]
         end_frame = clips[2 * i + 1]
@@ -238,15 +238,19 @@ def save_long_summary_csv(clips, items_record_clips, items_record_clips_large,
 
 
 def generate_aligned_txt_summary(input_csv, output_txt):
+    print(input_csv)
+    print(output_txt)
     with open(input_csv, newline='') as csvfile:
         reader = csv.DictReader(csvfile)
 
-        # Determine the max length of each column
-        column_widths = {column: max(len(column), max(len(str(row[column])) for row in reader)) for column in
-                         reader.fieldnames}
+        # Check if the reader has rows
+        rows = list(reader)
+        if not rows:
+            raise ValueError("The CSV file is empty")
 
-        csvfile.seek(0)  # Reset the reader to the beginning of the file
-        reader = csv.DictReader(csvfile)  # Re-read the CSV file
+        # Determine the max length of each column
+        column_widths = {column: max(len(column), max(len(str(row[column])) for row in rows)) for column in
+                         reader.fieldnames}
 
         with open(output_txt, 'w') as txtfile:
             # Write the header
@@ -255,7 +259,7 @@ def generate_aligned_txt_summary(input_csv, output_txt):
             txtfile.write("-" * (sum(column_widths.values()) + len(headers) * 3 - 1) + "\n")
 
             # Write each row
-            for row in reader:
+            for row in rows:
                 line = [str(row[column]).ljust(column_widths[column]) for column in reader.fieldnames]
                 txtfile.write(" | ".join(line) + "\n")
 
