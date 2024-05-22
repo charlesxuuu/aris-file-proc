@@ -204,9 +204,15 @@ def save_clips(capture, clips, output_path):
 def save_long_summary_csv(clips, items_record_clips, items_record_clips_large,
                           items_record_clips_small, output_path):
     long_summary = []
-    for i, clip in enumerate(items_record_clips):
-        start_frame = sum(len(c) for c in items_record_clips[:i])
-        end_frame = start_frame + len(clip) - 1
+    #for i, clip in enumerate(items_record_clips):
+    #    start_frame = sum(len(c) for c in items_record_clips[:i])
+    #    end_frame = start_frame + len(clip) - 1
+
+    for i in range(len(clips / 2)):
+        # TODO: some bugs here
+        start_frame = clips[2 * i]
+        end_frame = clips[2 * i + 1]
+        clip = items_record_clips[i]
         max_count = max(clip) if clip else 0
         total_sum = sum(clip)
 
@@ -224,9 +230,11 @@ def save_long_summary_csv(clips, items_record_clips, items_record_clips_large,
 
     # Save the results to a CSV file
     csv_file_path = 'long_summary.csv'
+    txt_file_path = 'long_summary.txt'
     csv_joined_file_path = os.path.join(output_path, csv_file_path)
+    txt_joined_file_path = os.path.join(output_path, txt_file_path)
     df.to_csv(csv_joined_file_path, index=False)
-    pass
+    generate_aligned_txt_summary(csv_joined_file_path, txt_joined_file_path)
 
 
 def generate_aligned_txt_summary(input_csv, output_txt):
