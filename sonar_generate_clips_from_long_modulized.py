@@ -125,18 +125,23 @@ def process_video(input_path, output_path):
             interval = 0
             if not clips or len(clips) % 2 == 0:
                 clips.append(max(0, frame_count - 40))
-                temp = items_record[-40:] if frame_count > 40 else items_record
-                temp_small = items_record_small
-                temp_large = items_record_large
+                if frame_count > 40:
+                    temp = items_record[-40:].copy()
+                    temp_small = items_record_small[-40:].copy()
+                    temp_large = items_record_large[-40:].copy()
+                else:
+                    temp = items_record.copy()
+                    temp_small = items_record_small.copy()
+                    temp_large = items_record_large.copy()
         else:
             interval += 1
         if interval > 80 and len(clips) % 2 == 1:
             clips.append(frame_count - 40)
-            items_record_clips.append(temp[:-40])
+            items_record_clips.append(temp[:-40].copy())
             temp = []
-            items_record_clips_large.append(temp_large[:-40])
+            items_record_clips_large.append(temp_large[:-40].copy())
             temp_large = []
-            items_record_clips_small.append(temp_small[:-40])
+            items_record_clips_small.append(temp_small[:-40].copy())
             temp_small = []
 
         frames = [resized_frame, mog_mask, convert_image, result, guided_img, guided_mog, edge_original, edge_mog]
@@ -159,10 +164,12 @@ def process_video(input_path, output_path):
     print(items_record)
     print("二维矩阵: 不同clips的fish count(小)")
     print(items_record_clips_small)
+    print_2d_list_with_lengths(items_record_clips_small)
     print("一维矩阵: 整个视频的fish count(小)")
     print(items_record_small)
     print("二维矩阵: 不同clips的fish count(大)")
     print(items_record_clips_large)
+    print_2d_list_with_lengths(items_record_clips_large)
     print("一维矩阵: 整个视频的fish count(大)")
     print(items_record_large)
 

@@ -124,13 +124,13 @@ while True:
         if len(clips) == 0 or len(clips) % 2 == 0:  # 如果 检测到有鱼 且没有clip正在录制
             clips.append(max(0, frameCount - 40))  # 添加clip开始时间
             if frameCount > 40:
-                temp = items_record[-40:]
-                temp_small = items_record_small
-                temp_big = items_record_big
+                temp = items_record[-40:].copy()
+                temp_small = items_record_small[-40:].copy()
+                temp_big = items_record_big[-40:].copy()
             else:
-                temp = items_record
-                temp_small = items_record_small
-                temp_big = items_record_big
+                temp = items_record.copy()
+                temp_small = items_record_small.copy()
+                temp_big = items_record_big.copy()
     else:
         interval += 1
     # print(interval)
@@ -202,10 +202,12 @@ print(items_record_clips)
 print("一维矩阵: 整个视频的fish count")
 print(items_record)
 print("二维矩阵: 不同clips的fish count(小)")
+print_2d_list_with_lengths(items_record_clips_small)
 print(items_record_clips_small)
 print("一维矩阵: 整个视频的fish count(小)")
 print(items_record_small)
 print("二维矩阵: 不同clips的fish count(大)")
+print_2d_list_with_lengths(items_record_clips_big)
 print(items_record_clips_big)
 print("一维矩阵: 整个视频的fish count(大)")
 print(items_record_big)
