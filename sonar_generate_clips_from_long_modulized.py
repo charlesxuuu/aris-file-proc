@@ -175,6 +175,7 @@ def process_video(input_path, output_path):
 
     save_clips(capture, clips, output_path)
     save_long_summary_csv(clips, items_record_clips, items_record_clips_large, items_record_clips_small, output_path)
+    save_clip_summary_csv(clips, items_record_clips, items_record_clips_large, items_record_clips_small, output_path)
     capture.release()
     cv2.destroyAllWindows()
 
@@ -208,6 +209,32 @@ def save_clips(capture, clips, output_path):
         out.release()
 
 
+def save_clip_summary_csv(clips, items_record_clips, items_record_clips_large,
+                          items_record_clips_small, output_path):
+
+    for i in range(len(clips) // 2):
+        clip_summary = []
+        start_frame = clips[2 * i]
+        end_frame = clips[2 * i + 1]
+        for j in range( len(items_record_clips[i])):
+            total_count = items_record_clips[i][j]
+            small_count = items_record_clips_small[i][j]
+            large_count = items_record_clips_large[i][j]
+            clip_summary.append([j + start_frame, total_count, large_count, small_count])
+
+        # Create a DataFrame for the results
+        df = pd.DataFrame(clip_summary, columns=['frame_no', 'total_count_a_frame',
+                                                 'large_count_a_frame', 'small_count_a_frame'])
+
+        # Save the results to a CSV file
+        csv_file_path = f"summary_clip_{i + 1}_{start_frame}-{end_frame}.csv"
+        txt_file_path = f"summary_clip_{i + 1}_{start_frame}-{end_frame}.txt"
+        csv_joined_file_path = os.path.join(output_path, csv_file_path)
+        txt_joined_file_path = os.path.join(output_path, txt_file_path)
+        df.to_csv(csv_joined_file_path, index=False)
+        generate_aligned_txt_summary(csv_joined_file_path, txt_joined_file_path)
+
+
 def save_long_summary_csv(clips, items_record_clips, items_record_clips_large,
                           items_record_clips_small, output_path):
     long_summary = []
@@ -216,7 +243,6 @@ def save_long_summary_csv(clips, items_record_clips, items_record_clips_large,
     #    end_frame = start_frame + len(clip) - 1
 
     for i in range(len(clips) // 2):
-        # TODO: some bugs here
         start_frame = clips[2 * i]
         end_frame = clips[2 * i + 1]
         clip = items_record_clips[i]
