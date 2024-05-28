@@ -383,6 +383,7 @@ def generate_aligned_txt_summary(input_csv, output_txt):
 
 
 if __name__ == "__main__":
+    start_time = time.time()
     bbox_record = {}
     input_video_path = "2.mp4"
     base_output_path = "./"
@@ -397,3 +398,5 @@ if __name__ == "__main__":
     print("Clear Cache")
     # time.sleep(10)
     shutil.rmtree("cache")
+    end_time = time.time()
+    print(f"Execution time: {end_time - start_time} seconds")
