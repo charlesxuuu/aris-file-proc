@@ -5,6 +5,7 @@ import pandas as pd
 import csv
 from cv2.ximgproc import guidedFilter
 
+bbox_record = {}
 
 def change_surrounding_region(mask, size):
     white_pixels = np.where(mask == 255)
@@ -19,7 +20,7 @@ def change_surrounding_region(mask, size):
 
 
 def process_frame(frame, mog_subtractor, frame_count):
-    resized_frame = cv2.resize(frame, (0, 0), fx=0.6, fy=0.6)
+    resized_frame = cv2.resize(frame, (0, 0), fx=1, fy=1)
     mog_mask = mog_subtractor.apply(resized_frame)
     copy_of_mog_mask = cv2.cvtColor(mog_mask, cv2.COLOR_GRAY2RGB)
 
@@ -73,17 +74,21 @@ def count_fish(stats, guided_img, size_thresh=30):
     fish_count = 0
     fish_count_small = 0
     fish_count_large = 0
+    temp_record = []
     for i in range(1, stats.shape[0]):
         if stats[i, cv2.CC_STAT_AREA] >= size_thresh:
-            x, y, w, h = stats[i, cv2.CC_STAT_LEFT], stats[i, cv2.CC_STAT_TOP], stats[i, cv2.CC_STAT_WIDTH], stats[
-                i, cv2.CC_STAT_HEIGHT]
+            x = stats[i, cv2.CC_STAT_LEFT]
+            y = stats[i, cv2.CC_STAT_TOP]
+            w = stats[i, cv2.CC_STAT_WIDTH]
+            h = stats[i, cv2.CC_STAT_HEIGHT]
+            temp_record.append([x,y,w,h])
             if np.mean(guided_img[y:y + h, x:x + w]) > 80:
                 fish_count += 1
                 if stats[i, cv2.CC_STAT_AREA] >= 50:
                     fish_count_large += 1
                 else:
                     fish_count_small += 1
-    return fish_count, fish_count_small, fish_count_large
+    return fish_count, fish_count_small, fish_count_large, temp_record
 
 
 def display_frames(frames):
@@ -111,8 +116,9 @@ def process_video(input_path, output_path):
 
         resized_frame, mog_mask, guided_img, guided_mog, edge_original, edge_mog, result, n_labels, stats, convert_image = process_frame(
             frame, mog_subtractor, frame_count)
-        fish_count, fish_count_small, fish_count_large = count_fish(stats, guided_img)
-
+        fish_count, fish_count_small, fish_count_large, temp_record = count_fish(stats, guided_img)
+        bbox_record[frame_count] = temp_record
+        
         items_record.append(fish_count)
         items_record_small.append(fish_count_small)
         items_record_large.append(fish_count_large)
@@ -124,7 +130,7 @@ def process_video(input_path, output_path):
         if fish_count != 0:
             interval = 0
             if not clips or len(clips) % 2 == 0:
-                clips.append(max(0, frame_count - 40))
+                clips.append(max(1, frame_count - 40))
                 if frame_count > 40:
                     temp = items_record[-40:].copy()
                     temp_small = items_record_small[-40:].copy()
@@ -201,6 +207,10 @@ def save_clips(capture, clips, output_path):
         capture.set(cv2.CAP_PROP_POS_FRAMES, start_frame)
         while capture.isOpened() and start_frame <= end_frame:
             ret, frame = capture.read()
+            if start_frame in bbox_record.keys():
+                for bbox in bbox_record[start_frame]:
+                    x,y,w,h = bbox
+                    cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), thickness=1)
             if ret:
                 out.write(frame)
             else:
@@ -298,7 +308,7 @@ def generate_aligned_txt_summary(input_csv, output_txt):
 
 
 if __name__ == "__main__":
-    input_video_path = "sonar_mp4/ARIS_2020_05_24/2020-05-24_000000.mp4"
+    input_video_path = "1.mp4"
     base_output_path = "sonar_mp4/ARIS_2020_05_24"
     clip_folder_name = os.path.basename(input_video_path).split('.')[0]
     output_video_path = os.path.join(base_output_path, clip_folder_name)
