@@ -251,9 +251,10 @@ def process_video(input_path, output_path):
     print("一维矩阵: 整个视频的fish count(大)")
     print(items_record_large)
 
-    save_clips(capture, clips, output_path)
-    save_long_summary_csv(clips, items_record_clips, items_record_clips_large, items_record_clips_small, output_path)
-    save_clip_summary_csv(clips, items_record_clips, items_record_clips_large, items_record_clips_small, output_path)
+    if clips != []:
+        save_clips(capture, clips, output_path)
+        save_long_summary_csv(clips, items_record_clips, items_record_clips_large, items_record_clips_small, output_path)
+        save_clip_summary_csv(clips, items_record_clips, items_record_clips_large, items_record_clips_small, output_path)
     capture.release()
     cv2.destroyAllWindows()
 
